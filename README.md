@@ -7,7 +7,7 @@ $ git clone https://github.com/tomoish/read-me.git
 ```
 
 ### run http server
-1. run main.go
+1. run main.go (docker-compose exec app go run main.go)
     ```
     # ./src
     $ go run main.go
@@ -16,7 +16,7 @@ $ git clone https://github.com/tomoish/read-me.git
 2. Test it out at http://localhost:8080/ (username)
 
 ### Using Docker
-1. docker compose up
+1. docker compose up (-d)
     ```
     # ./
     $ docker compose up
