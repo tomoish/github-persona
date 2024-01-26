@@ -30,5 +30,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", handler)
+	fmt.Println("Hello, World!!")
 	http.ListenAndServe(":8080", nil)
 }
