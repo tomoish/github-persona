@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-
 	"github.com/google/go-github/v58/github"
 )
 
