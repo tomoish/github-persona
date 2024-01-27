@@ -1,64 +1,12 @@
-package main
+package funcs
+
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"net/http"
-	"os"
-	"github.com/joho/godotenv"
+	"encoding/json"
+    "net/http"
+    "bytes"
 )
-
-
-
-
-func main() {
-
-
-		// .envファイルから環境変数を読み込む
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		return
-	}
-
-
-	// 個人アクセストークンを環境変数から取得
-	token := os.Getenv("GITHUB_TOKEN")
-	if token == "" {
-		fmt.Println("GITHUB_TOKEN is not set")
-		return
-	}
-
-    // ユーザーのリポジトリ情報を取得
-    username := "kou7306"
-    repos, err := getRepositories(username, token)
-	fmt.Printf("repos: %v\n", repos)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-	// 各リポジトリの言語別のファイルサイズを取得
-	for _, repo := range repos {
-		repoDetails, totalSize,err := getRepositoryLanguage(repo.Name, repo.Owner, token)
-		
-		if err != nil {
-			// エラーハンドリング
-			continue
-		}
-
-		// 合計ファイルサイズを計算
-		// 各言語のファイルサイズをパーセンテージで表示
-		fmt.Printf("Language sizes for repo %s:\n", repo)
-		for language, size := range repoDetails {
-			percentage := float64(size) / float64(totalSize) * 100.0
-			fmt.Printf("%s: %.2f%%\n", language, percentage)
-		}
-	}
-
-}
-
-
 
 
 /// GraphQLQuery はGraphQLのクエリを格納するための構造体です
@@ -100,7 +48,7 @@ type GraphQLResponse struct {
 	} `json:"data"`
 }
 
-func getRepositories(username, token string) ([]Repository, error) {
+func GetRepositories(username, token string) ([]Repository, error) {
 	// GraphQLクエリを定義
 	query := `
 	{
@@ -236,7 +184,7 @@ type RepositoryDetail struct {
 
 
 // リポジトリの言語別のファイルサイズを取得する関数
-func getRepositoryLanguage(repoName, repoOwner, token string) (map[string]int,int, error) {
+func GetRepositoryLanguage(repoName, repoOwner, token string) (map[string]int,int, error) {
 
 	// 変更するクエリをここに入力してください
 	query_frame := `

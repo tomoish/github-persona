@@ -8,3 +8,12 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 )
+
+
+require (
+	funcs v0.0.0
+)
+
+replace (
+	funcs => ./funcs
+)
