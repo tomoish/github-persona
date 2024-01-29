@@ -1,30 +1,28 @@
 package main
 
-import (	
+import (
 	"fmt"
 	"os"
+	"time"
+
 	"github.com/joho/godotenv"
-	"funcs" 
-    "time"
-    "github.com/patrickmn/go-cache"
+	"github.com/patrickmn/go-cache"
+
+	"github.com/tomoish/readme/funcs"
 )
 
-
-//交互にトークンを取得するための関数
-func getToken(tokens []string, currentIndex int) (string,int) {
-
-
+// 交互にトークンを取得するための関数
+func getToken(tokens []string, currentIndex int) (string, int) {
 	key := tokens[currentIndex]
-	
+
 	currentIndex = (currentIndex + 1) % len(tokens)
 	fmt.Println(currentIndex)
-	return key,currentIndex
+	return key, currentIndex
 }
 
-func main() {
+func main2() {
 
-
-		// .envファイルから環境変数を読み込む
+	// .envファイルから環境変数を読み込む
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading .env file")
@@ -37,73 +35,55 @@ func main() {
 		os.Getenv("GITHUB_TOKEN2"),
 	}
 
-
 	// トークンを取得する
-   // キャッシュを作成
-   c := cache.New(5*time.Minute, 10*time.Minute) // キャッシュの有効期限やクリーンアップ間隔を設定
+	// キャッシュを作成
+	c := cache.New(5*time.Minute, 10*time.Minute) // キャッシュの有効期限やクリーンアップ間隔を設定
 
-	
-    key := "kjalfu32la"
+	key := "kjalfu32la"
 
-	var token string 
+	var token string
 	var newCachedData int
 	// currentIndex := 0
-	
 
-
-
-		
-    
 	// キャッシュにデータが存在しない場合のみデータを保存
 	if _, found := c.Get(key); !found {
-		
+
 		// トークンを取得する
-		token,newCachedData = getToken(tokens,0)
+		token, newCachedData = getToken(tokens, 0)
 
 		c.Set(key, newCachedData, cache.DefaultExpiration)
 	} else {
 		// すでにデータが存在する場合の処理
 		// データを取得
-		cachedData,_ := c.Get(key)
+		cachedData, _ := c.Get(key)
 		// 型アサーションを行い、int型に変換
 		cachedIntData, _ := cachedData.(int)
 		fmt.Println("cachedIntData")
 		fmt.Println(cachedIntData)
 		// トークンを取得する
-		token,newCachedData = getToken(tokens,cachedIntData)
+		token, newCachedData = getToken(tokens, cachedIntData)
 
 		c.Set(key, newCachedData, cache.DefaultExpiration)
 
 		fmt.Println(token)
 	}
 
-	
-
-
-
-    
-
-
-		
-    // ユーザーのリポジトリ情報を取得
-    username := "kou7306"
-    repos, err := funcs.GetRepositories(username, token)
+	// ユーザーのリポジトリ情報を取得
+	username := "kou7306"
+	repos, err := funcs.GetRepositories(username, token)
 	fmt.Printf("repos: %v\n", repos)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-
-
-
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// 言語ごとの全体のファイルサイズを初期化
 	totalLanguageSize := make(map[string]int)
 	var allSize float64 = 0.0
 	// 各リポジトリの言語別のファイルサイズを取得
 	for _, repo := range repos {
-		repoDetails, totalSize,err := funcs.GetRepositoryLanguage(repo.Name, repo.Owner, token)
-		
+		repoDetails, totalSize, err := funcs.GetRepositoryLanguage(repo.Name, repo.Owner, token)
+
 		if err != nil {
 			// エラーハンドリング
 			continue
@@ -125,8 +105,6 @@ func main() {
 	}
 
 }
-
-
 
 // func generateSessionKey() string {
 //     // ランダムなバイト列を生成
