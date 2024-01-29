@@ -37,7 +37,6 @@ func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
-	// ctx := context.Background()
 
 	queryValues := r.URL.Query()
 	username := queryValues.Get("username")
