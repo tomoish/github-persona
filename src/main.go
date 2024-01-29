@@ -8,6 +8,8 @@ import (
 	"strings"
 
 	"github.com/google/go-github/v58/github"
+
+	"github.com/tomoish/readme/funcs"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -30,8 +32,35 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, repos)
 }
 
+func getLanguage(w http.ResponseWriter, r *http.Request) {
+	main2()
+}
+
+func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
+	// ctx := context.Background()
+
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
+
+	if username == "" {
+		http.Error(w, "username is required", http.StatusBadRequest)
+		return
+	}
+
+	streak, err := funcs.GetLongestStreak(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, streak)
+
+}
+
 func main() {
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/", getCommitStreakHandler)
+	http.HandleFunc("/", getLanguage)
 	fmt.Println("Hello, World!")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
