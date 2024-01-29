@@ -32,7 +32,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, repos)
 }
 
-func getLanguage(w http.ResponseWriter, r *http.Request) {
+func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
 	main2()
 }
 
@@ -60,7 +60,7 @@ func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/", getCommitStreakHandler)
-	http.HandleFunc("/", getLanguage)
+	http.HandleFunc("/", getLanguageHandler)
 	fmt.Println("Hello, World!")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
