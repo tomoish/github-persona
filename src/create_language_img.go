@@ -1,15 +1,22 @@
-package main
-
+package language_img
 import (
 	"fmt"
 	"time"
     "github.com/patrickmn/go-cache"
 	"github.com/tomoish/readme/funcs"
-	"math/rand"
 )
 
 
-func main() {
+
+
+func CreateLanguageImg() {
+
+	colordict := map[string]string{
+		"HTML": "#E34F26",
+		"CSS": "#ffffff",
+		"Python": "#3498DB",
+		"others": "#000000",
+	}
 
 
 	// キャッシュのキーを設定
@@ -74,6 +81,7 @@ func main() {
 
 		allSize += float64(totalSize)
 	}
+	colorCode := ""
 
 	languages := []funcs.LanguageStat{}
 	// 各言語のファイルサイズをパーセンテージで計算
@@ -81,15 +89,15 @@ func main() {
 		percentage := float64(size) / allSize * 100.0
 		fmt.Printf("%s: %.2f%%\n", language, percentage)
 
-		// 乱数生成器の初期化
-		rand.Seed(time.Now().UnixNano())
 
-		// ランダムなRGB値を生成
-		red := rand.Intn(256)
-		green := rand.Intn(256)
-		blue := rand.Intn(256)
-		// RGB値をカラーコードの文字列に変換
-		colorCode := fmt.Sprintf("#%02X%02X%02X", red, green, blue)
+		if _, ok := colordict[language]; ok {
+			// language キーが colordict マップに存在する場合の処理
+			colorCode = colordict[language]
+		} else {
+			// language キーが colordict マップに存在しない場合の処理
+			colorCode = colordict["others"]
+		}
+		
 
 		languages = append(languages, funcs.LanguageStat{
 			Name:      language,
