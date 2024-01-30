@@ -1,4 +1,4 @@
-package main
+package language_img
 import (
 	"fmt"
 	"time"
@@ -9,9 +9,7 @@ import (
 
 
 
-func main() {
-
-
+func CreateLanguageImg() {
 
 	colordict := map[string]string{
 		"HTML": "#E34F26",

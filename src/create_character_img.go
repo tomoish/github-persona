@@ -1,11 +1,11 @@
-package main
+package character
 
 import (
 	"fmt"
 	"github.com/tomoish/readme/funcs"
 )
 
-func main() {
+func CreateCharacterImg() {
 	// キャラクター画像のパス
 	characterPath := "funcs/images/character.png"
 	// ゲージ画像のパス
