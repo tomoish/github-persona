@@ -1,0 +1,10 @@
+linters-settings:
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: "github.com/tomoish/readme"
+
+linters:
+  enable:
+    - gofmt
+    - goimports

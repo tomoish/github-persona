@@ -2,14 +2,12 @@ package funcs
 
 import (
     "bytes"
-    "fmt"
     "github.com/fogleman/gg"
     "math"
-    "os"
 )
 
 // ゲージを描画してバイトスライスで返す
-func drawGauge(percentage float64) ([]byte, error) {
+func DrawGauge(percentage float64) ([]byte, error) {
     const S = 1024
     dc := gg.NewContext(S, S)
     dc.SetRGB(1, 1, 1)

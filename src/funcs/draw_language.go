@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/fogleman/gg"
 	"math"
-
+	"sort"
 )
 
 type LanguageStat struct {
@@ -19,7 +19,7 @@ func drawRoundedRectangle(dc *gg.Context, x, y, w, h, r float64) {
 
 }
 
-func generateLanguageUsageGraph(languages []LanguageStat, width, height int) error {
+func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) error {
 	const cornerRadius = 10.0
 	dc := gg.NewContext(width, height)
 
@@ -40,8 +40,43 @@ func generateLanguageUsageGraph(languages []LanguageStat, width, height int) err
 	dc.SetRGB(0.16, 0.20, 0.29) // バーの背景色
 	drawRoundedRectangle(dc, barX, barY, barWidth, barHeight, 5)
 
-	// 帯グラフの各セクションを描画
+	// 割合でソート
+	sort.SliceStable(languages, func(i, j int) bool {
+		return languages[i].Percent > languages[j].Percent
+	})
+
+	fmt.Printf("languages: %v\n", languages)
+
+	// 1%未満の言語を抽出し、"others"としてまとめる
+	var otherPercent float64
+	// 削除対象の言語を探し、スライスから削除
+	newLanguages := make([]LanguageStat, 0)
 	for _, lang := range languages {
+		if lang.Percent < 3.0 {
+			otherPercent += lang.Percent		
+
+		} else {
+			newLanguages = append(newLanguages, lang)
+			continue
+		}
+	}
+
+
+	fmt.Printf("languages: %v\n", newLanguages)
+
+	// "others"を追加
+	if otherPercent > 0 {
+		othersStat := LanguageStat{
+			Name:    "Others",
+			Percent: otherPercent,
+			Color:   "#CCCCCC", // 任意の色
+		}
+		newLanguages = append(newLanguages, othersStat)
+	}
+
+
+	// 帯グラフの各セクションを描画
+	for _, lang := range newLanguages {
 		dc.SetHexColor(lang.Color)
 		sectionWidth := barWidth * lang.Percent / 100
 		drawRoundedRectangle(dc, barX, barY, sectionWidth, barHeight, 5)
@@ -53,7 +88,7 @@ func generateLanguageUsageGraph(languages []LanguageStat, width, height int) err
 	legendY := barY + barHeight + 20.0 // 帯グラフの下に余白をとる
 	dc.LoadFontFace("Roboto-Medium.ttf", 25) // 凡例のフォントサイズ
 	i := 0.0
-	for _, lang := range languages {
+	for _, lang := range newLanguages {
 		// 色のサンプルを描画
 		dc.SetHexColor(lang.Color)
 		dc.DrawCircle(legendX+5.0+math.Mod(float64(int(i)), 2.0)*300.0, legendY+6, 5)
@@ -72,3 +107,6 @@ func generateLanguageUsageGraph(languages []LanguageStat, width, height int) err
 	dc.SavePNG("language_usage_graph.png")
 	return nil
 }
+
+
+

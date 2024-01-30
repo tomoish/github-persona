@@ -3,9 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
+
 	"github.com/google/go-github/v58/github"
+
+	"github.com/tomoish/readme/funcs"
+	"github.com/tomoish/readme/language_img"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -28,8 +33,38 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, repos)
 }
 
+func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
+	// language_img.CreateLanguageImg()
+}
+
+func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
+
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
+
+	if username == "" {
+		http.Error(w, "username is required", http.StatusBadRequest)
+		return
+	}
+
+	streak, err := funcs.GetLongestStreak(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, streak)
+
+}
+
 func main() {
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/", getCommitStreakHandler)
+	// http.HandleFunc("/", getLanguageHandler)
 	fmt.Println("Hello, World!")
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatalf("HTTP server failed: %v", err)
+	}
+
 }

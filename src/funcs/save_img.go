@@ -1,13 +1,12 @@
 package funcs
 
 import (
-    "bytes"
     "os"
 )
 
 
 // 画像をファイルに保存する
-func saveImageToFile(filename string, imgBytes []byte) error {
+func SaveImageToFile(filename string, imgBytes []byte) error {
     outputFile, err := os.Create(filename)
     if err != nil {
         return err

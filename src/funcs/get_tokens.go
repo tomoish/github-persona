@@ -3,19 +3,16 @@ import (
 	"fmt"
 	"os"
 	"github.com/joho/godotenv"
-	"funcs" 
-	"time"
-	"github.com/patrickmn/go-cache"
 )
 
 
 //交互にトークンを取得するための関数
-func getTokens(currentIndex int) (string,int) {
+func GetTokens(currentIndex int) (string,int) {
 	// .envファイルから環境変数を読み込む
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading .env file")
-		return
+		return "", currentIndex
 	}
 	// 個人アクセストークンを環境変数から取得
 	// トークンをスライスに格納

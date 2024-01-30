@@ -12,14 +12,29 @@ $ git clone https://github.com/tomoish/read-me.git
     # ./src
     $ go run main.go
     ```
+    or
+    ```
+    $ docker-compose exec app go run main.go
+    ```
 
-2. Test it out at http://localhost:8080/ (username)
+3. Test it out at http://localhost:8080/ (username)
 
 ### Using Docker
 1. docker compose up
     ```
     # ./
-    $ docker compose up
+    $ docker compose up -d
     ```
 
 2. Test it out at http://localhost:8080/ (username)
+
+### Format code
+1. install golangci-lint and pre-commit
+    ```
+    $ berw install golangci-lint
+    $ brew install pre-commit
+    ```
+2. setting for pre-commit
+    ```
+    $ pre-commit install -t pre-commit
+    ```

@@ -1,8 +1,7 @@
-package main
+package funcs
 
 import (
     "bytes"
-    "fmt"
     "image"
     "image/draw"
     "image/png"
@@ -10,7 +9,7 @@ import (
     "github.com/nfnt/resize"
 )
 
-func mergeImages(characterPath, gaugePath string) ([]byte, error) {
+func MergeImages(characterPath, gaugePath string) ([]byte, error) {
     // キャラクター画像をロード
     characterFile, err := os.Open(characterPath)
     if err != nil {
