@@ -114,7 +114,7 @@ func main() {
 
 
 	// 画像をファイルに保存
-	funcs.SaveImage("images/language.png", ImgBytes)
+	funcs.SaveImage("funcs/images/language.png", ImgBytes)
 
 }
 
