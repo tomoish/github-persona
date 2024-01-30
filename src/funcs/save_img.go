@@ -1,12 +1,17 @@
 package funcs
 
+
 import (
     "os"
+
 )
 
+// SaveImage は指定されたファイルパスに画像データを保存します。
 
-// 画像をファイルに保存する
-func SaveImageToFile(filename string, imgBytes []byte) error {
+
+// SaveImage は指定されたファイルパスに画像データを保存します。
+// filename には保存先のファイルパスを、imgBytes には画像データを渡します。
+func SaveImage(filename string, imgBytes []byte) error {
     outputFile, err := os.Create(filename)
     if err != nil {
         return err

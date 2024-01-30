@@ -1,4 +1,4 @@
-package language_img
+package main
 import (
 	"fmt"
 	"time"
@@ -9,7 +9,9 @@ import (
 
 
 
-func CreateLanguageImg() {
+func main() {
+
+
 
 	colordict := map[string]string{
 		"HTML": "#E34F26",
@@ -108,7 +110,11 @@ func CreateLanguageImg() {
 
 	fmt.Printf("languages: %v\n", languages)
 
-	funcs.GenerateLanguageUsageGraph(languages, 600, 250)
+	ImgBytes, err := funcs.GenerateLanguageUsageGraph(languages, 600, 250)
+
+
+	// 画像をファイルに保存
+	funcs.SaveImage("images/language.png", ImgBytes)
 
 }
 

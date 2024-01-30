@@ -5,6 +5,7 @@ import (
 	"github.com/fogleman/gg"
 	"math"
 	"sort"
+	"bytes"
 )
 
 type LanguageStat struct {
@@ -19,7 +20,7 @@ func drawRoundedRectangle(dc *gg.Context, x, y, w, h, r float64) {
 
 }
 
-func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) error {
+func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]byte, error)  {
 	const cornerRadius = 10.0
 	dc := gg.NewContext(width, height)
 
@@ -103,9 +104,14 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) err
 		
 	}
 
-	// 画像をファイルに保存
-	dc.SavePNG("language_usage_graph.png")
-	return nil
+    
+    // 画像をバイトデータにエンコード
+    var buf bytes.Buffer
+    if err := dc.EncodePNG(&buf); err != nil {
+        return nil, err
+    }
+
+    return buf.Bytes(), nil
 }
 
 
