@@ -36,6 +36,10 @@ func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
 	CreateLanguageImg()
 }
 
+func getCharacterHandler(w http.ResponseWriter, r *http.Request) {
+	CreateCharacterImg()
+}
+
 func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
 
 	queryValues := r.URL.Query()
@@ -60,6 +64,7 @@ func main() {
 	http.HandleFunc("/test", handler)
 	http.HandleFunc("/streak", getCommitStreakHandler)
 	http.HandleFunc("/language", getLanguageHandler)
+	http.HandleFunc("/character", getCharacterHandler)
 	fmt.Println("Hello, World!")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

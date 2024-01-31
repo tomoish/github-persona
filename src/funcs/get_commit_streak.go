@@ -44,6 +44,7 @@ type response struct {
 	} `json:"data"`
 }
 
+
 func calculateStreak(weeks []struct {
 	ContributionDays []struct {
 		ContributionCount int `json:"contributionCount"`
