@@ -1,13 +1,14 @@
 package funcs
-import (	
+
+import (
 	"fmt"
 	"os"
+
 	"github.com/joho/godotenv"
 )
 
-
-//交互にトークンを取得するための関数
-func GetTokens(currentIndex int) (string,int) {
+// 交互にトークンを取得するための関数
+func GetTokens(currentIndex int) (string, int) {
 	// .envファイルから環境変数を読み込む
 	err := godotenv.Load()
 	if err != nil {
@@ -22,8 +23,8 @@ func GetTokens(currentIndex int) (string,int) {
 	}
 
 	key := tokens[currentIndex]
-	
+
 	currentIndex = (currentIndex + 1) % len(tokens)
 	fmt.Println(currentIndex)
-	return key,currentIndex
+	return key, currentIndex
 }

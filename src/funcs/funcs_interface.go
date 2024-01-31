@@ -1,9 +1,7 @@
 package funcs
 
-
 // 関数をまとめました。
 // type FuncInterface interface {
-
 
 // 交互にトークンを取れる関数
 //  GetTokens(currentIndex int) (string,int)
@@ -17,7 +15,7 @@ package funcs
 // 言語の割合を帯グラフで現した画像を生成する関数
 // 	GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]byte, error)
 
-// 言語別のファイルサイズを取得する関数	
+// 言語別のファイルサイズを取得する関数
 // 	GetRepositoryLanguage() (map[string]int, int, error)
 
 // キャラクター画像とゲージ画像を合成する関数
