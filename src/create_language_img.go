@@ -1,55 +1,39 @@
 package main
-
 import (
 	"fmt"
-	"os"
 	"time"
-
-	"github.com/joho/godotenv"
-	"github.com/patrickmn/go-cache"
-
+    "github.com/patrickmn/go-cache"
 	"github.com/tomoish/readme/funcs"
 )
 
-// 交互にトークンを取得するための関数
-func getToken(tokens []string, currentIndex int) (string, int) {
-	key := tokens[currentIndex]
 
-	currentIndex = (currentIndex + 1) % len(tokens)
-	fmt.Println(currentIndex)
-	return key, currentIndex
-}
 
-func main2() {
 
-	// .envファイルから環境変数を読み込む
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		return
-	}
-	// 個人アクセストークンを環境変数から取得
-	// トークンをスライスに格納
-	tokens := []string{
-		os.Getenv("GITHUB_TOKEN1"),
-		os.Getenv("GITHUB_TOKEN2"),
+func main() {
+
+
+
+	colordict := map[string]string{
+		"HTML": "#E34F26",
+		"CSS": "#ffffff",
+		"Python": "#3498DB",
+		"others": "#000000",
 	}
 
-	// トークンを取得する
-	// キャッシュを作成
-	c := cache.New(5*time.Minute, 10*time.Minute) // キャッシュの有効期限やクリーンアップ間隔を設定
 
-	key := "kjalfu32la"
+	// キャッシュのキーを設定
+    key := "kjalfu32la"
 
 	var token string
 	var newCachedData int
 	// currentIndex := 0
-
+	// キャッシュを作成
+	c := cache.New(5*time.Minute, 10*time.Minute) // キャッシュの有効期限やクリーンアップ間隔を設定
+    // Githubトークンの交互取得
 	// キャッシュにデータが存在しない場合のみデータを保存
-	if _, found := c.Get(key); !found {
-
+	if _, found := c.Get(key); !found {		
 		// トークンを取得する
-		token, newCachedData = getToken(tokens, 0)
+		token,newCachedData = funcs.GetTokens(0)
 
 		c.Set(key, newCachedData, cache.DefaultExpiration)
 	} else {
@@ -61,7 +45,7 @@ func main2() {
 		fmt.Println("cachedIntData")
 		fmt.Println(cachedIntData)
 		// トークンを取得する
-		token, newCachedData = getToken(tokens, cachedIntData)
+		token,newCachedData = funcs.GetTokens(cachedIntData)
 
 		c.Set(key, newCachedData, cache.DefaultExpiration)
 
@@ -80,6 +64,7 @@ func main2() {
 	// 言語ごとの全体のファイルサイズを初期化
 	totalLanguageSize := make(map[string]int)
 	var allSize float64 = 0.0
+
 	// 各リポジトリの言語別のファイルサイズを取得
 	for _, repo := range repos {
 		repoDetails, totalSize, err := funcs.GetRepositoryLanguage(repo.Name, repo.Owner, token)
@@ -98,11 +83,38 @@ func main2() {
 
 		allSize += float64(totalSize)
 	}
+	colorCode := ""
 
+	languages := []funcs.LanguageStat{}
+	// 各言語のファイルサイズをパーセンテージで計算
 	for language, size := range totalLanguageSize {
 		percentage := float64(size) / allSize * 100.0
 		fmt.Printf("%s: %.2f%%\n", language, percentage)
+
+
+		if _, ok := colordict[language]; ok {
+			// language キーが colordict マップに存在する場合の処理
+			colorCode = colordict[language]
+		} else {
+			// language キーが colordict マップに存在しない場合の処理
+			colorCode = colordict["others"]
+		}
+		
+
+		languages = append(languages, funcs.LanguageStat{
+			Name:      language,
+			Percent:   percentage,
+			Color:  colorCode,
+		})
 	}
+
+	fmt.Printf("languages: %v\n", languages)
+
+	ImgBytes, err := funcs.GenerateLanguageUsageGraph(languages, 600, 250)
+
+
+	// 画像をファイルに保存
+	funcs.SaveImage("funcs/images/language.png", ImgBytes)
 
 }
 

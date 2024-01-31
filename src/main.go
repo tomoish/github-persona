@@ -10,6 +10,7 @@ import (
 	"github.com/google/go-github/v58/github"
 
 	"github.com/tomoish/readme/funcs"
+	"github.com/tomoish/readme/language_img"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +34,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
-	main2()
+	// language_img.CreateLanguageImg()
 }
 
 func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +60,7 @@ func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/", getCommitStreakHandler)
-	http.HandleFunc("/", getLanguageHandler)
+	// http.HandleFunc("/", getLanguageHandler)
 	fmt.Println("Hello, World!")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
