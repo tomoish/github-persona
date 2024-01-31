@@ -7,7 +7,6 @@ import (
 	"net/http"
 )
 
-
 // リポジトリの言語別のファイルサイズを取得するための構造体です
 
 type RepositoryLanguage struct {

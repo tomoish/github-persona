@@ -1,7 +1,8 @@
-package character
+package main
 
 import (
 	"fmt"
+
 	"github.com/tomoish/readme/funcs"
 )
 
