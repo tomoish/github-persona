@@ -10,7 +10,7 @@ import (
 )
 
 func CreateLanguageImg() {
-
+// 言語ごとの色をここで決める
 	colordict := map[string]string{
 		"HTML":   "#E34F26",
 		"CSS":    "#ffffff",
@@ -112,6 +112,8 @@ func CreateLanguageImg() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	return languages
 
 }
 
