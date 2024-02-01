@@ -1,15 +1,13 @@
 package funcs
 
-
 import (
-	"fmt"
+	"bytes"
 	"encoding/json"
-    "net/http"
-    "bytes"
+	"fmt"
+	"net/http"
 )
 
-
-/// GraphQLQuery はGraphQLのクエリを格納するための構造体です
+// / GraphQLQuery はGraphQLのクエリを格納するための構造体です
 type GraphQLQuery struct {
 	Query string `json:"query"`
 }
@@ -17,7 +15,7 @@ type GraphQLQuery struct {
 // Repository はリポジトリの情報を格納するための構造体です
 type Repository struct {
 	Name   string `json:"name"`
-	Owner string `json:"owner"`
+	Owner  string `json:"owner"`
 	IsFork bool   `json:"isFork"`
 }
 
@@ -35,15 +33,14 @@ type GraphQLResponse struct {
 			} `json:"repositoriesContributedTo"`
 
 			Repositories struct {
-				Nodes []struct{
-					Name   string `json:"name"`
+				Nodes []struct {
+					Name  string `json:"name"`
 					Owner struct {
 						Login string `json:"login"`
 					} `json:"owner"`
-					IsFork bool   `json:"isFork"`
+					IsFork bool `json:"isFork"`
 				} `json:"nodes"`
 			} `json:"repositories"`
-
 		} `json:"user"`
 	} `json:"data"`
 }
@@ -116,7 +113,7 @@ func GetRepositories(username, token string) ([]Repository, error) {
 	for _, repo := range response.Data.User.RepositoriesContributedTo.Nodes {
 		repository := Repository{
 			Name:   repo.Name,
-			Owner: repo.Owner.Login,
+			Owner:  repo.Owner.Login,
 			IsFork: false,
 		}
 		repositories = append(repositories, repository)
@@ -138,8 +135,6 @@ func GetRepositories(username, token string) ([]Repository, error) {
 	return repositories, nil
 }
 
-
-
 // スライス内にリポジトリが存在するかを確認
 func containsRepository(repositories []Repository, name, owner string) bool {
 	for _, repo := range repositories {
@@ -149,4 +144,3 @@ func containsRepository(repositories []Repository, name, owner string) bool {
 	}
 	return false
 }
-
