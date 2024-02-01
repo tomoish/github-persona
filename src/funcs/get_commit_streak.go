@@ -65,8 +65,7 @@ func calculateStreak(weeks []struct {
 	return maxStreak
 }
 
-func GetLongestStreak(username string) (int, error) {
-	// ctx := context.Background()
+func GetCommitHistory(username string) (int, []int, error) {
 	query := fmt.Sprintf(query_frame, username)
 
 	request := GraphQLQuery{Query: query}
@@ -93,13 +92,17 @@ func GetLongestStreak(username string) (int, error) {
 		log.Fatalf("Decoder failed: %v", err)
 	}
 
+	var dailyCommits []int
+	for weeklyCommits := range res.Data.User.ContributionsCollection.ContributionCalendar.Weeks {
+		for dailyCommit := range res.Data.User.ContributionsCollection.ContributionCalendar.Weeks[weeklyCommits].ContributionDays {
+			dailyCommits = append(dailyCommits, res.Data.User.ContributionsCollection.ContributionCalendar.Weeks[weeklyCommits].ContributionDays[dailyCommit].ContributionCount)
+		}
+	}
+
 	fmt.Println("response: ", res.Data.User.ContributionsCollection.ContributionCalendar.Weeks)
 
-	// res, err := makeRequest(ctx, query)
-	// if err != nil {
-	//     return 0, err
-	// }
+	fmt.Println("dailyCommits: ", dailyCommits)
+	fmt.Println("length of dailyCommits: ", len(dailyCommits))
 
-	// コミットストリークを計算
-	return calculateStreak(res.Data.User.ContributionsCollection.ContributionCalendar.Weeks), nil
+	return calculateStreak(res.Data.User.ContributionsCollection.ContributionCalendar.Weeks), dailyCommits, err
 }

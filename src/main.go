@@ -50,13 +50,13 @@ func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	streak, err := funcs.GetLongestStreak(username)
+	streak, dailyCommits, err := funcs.GetCommitHistory(username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprint(w, streak)
+	fmt.Fprint(w, streak, dailyCommits)
 
 }
 
