@@ -1,4 +1,4 @@
-package main
+package funcs
 
 import (
 	"fmt"
@@ -6,7 +6,6 @@ import (
 
 	"github.com/patrickmn/go-cache"
 
-	"github.com/tomoish/readme/funcs"
 )
 
 func CreateLanguageImg() {
@@ -30,7 +29,7 @@ func CreateLanguageImg() {
 	// キャッシュにデータが存在しない場合のみデータを保存
 	if _, found := c.Get(key); !found {
 		// トークンを取得する
-		token, newCachedData = funcs.GetTokens(0)
+		token, newCachedData = GetTokens(0)
 
 		c.Set(key, newCachedData, cache.DefaultExpiration)
 	} else {
@@ -42,7 +41,7 @@ func CreateLanguageImg() {
 		fmt.Println("cachedIntData")
 		fmt.Println(cachedIntData)
 		// トークンを取得する
-		token, newCachedData = funcs.GetTokens(cachedIntData)
+		token, newCachedData = GetTokens(cachedIntData)
 
 		c.Set(key, newCachedData, cache.DefaultExpiration)
 
@@ -51,7 +50,7 @@ func CreateLanguageImg() {
 
 	// ユーザーのリポジトリ情報を取得
 	username := "kou7306"
-	repos, err := funcs.GetRepositories(username, token)
+	repos, err := GetRepositories(username, token)
 	fmt.Printf("repos: %v\n", repos)
 	if err != nil {
 		fmt.Println(err)
@@ -64,7 +63,7 @@ func CreateLanguageImg() {
 
 	// 各リポジトリの言語別のファイルサイズを取得
 	for _, repo := range repos {
-		repoDetails, totalSize, err := funcs.GetRepositoryLanguage(repo.Name, repo.Owner, token)
+		repoDetails, totalSize, err := GetRepositoryLanguage(repo.Name, repo.Owner, token)
 
 		if err != nil {
 			// エラーハンドリング
@@ -82,7 +81,7 @@ func CreateLanguageImg() {
 	}
 	colorCode := ""
 
-	languages := []funcs.LanguageStat{}
+	languages := []LanguageStat{}
 	// 各言語のファイルサイズをパーセンテージで計算
 	for language, size := range totalLanguageSize {
 		percentage := float64(size) / allSize * 100.0
@@ -96,7 +95,7 @@ func CreateLanguageImg() {
 			colorCode = colordict["others"]
 		}
 
-		languages = append(languages, funcs.LanguageStat{
+		languages = append(languages, LanguageStat{
 			Name:    language,
 			Percent: percentage,
 			Color:   colorCode,
@@ -105,15 +104,15 @@ func CreateLanguageImg() {
 
 	fmt.Printf("languages: %v\n", languages)
 
-	ImgBytes, _ := funcs.GenerateLanguageUsageGraph(languages, 600, 250)
+	ImgBytes, _ := GenerateLanguageUsageGraph(languages, 600, 250)
 
 	// 画像をファイルに保存
-	err = funcs.SaveImage("funcs/images/language.png", ImgBytes)
+	err = SaveImage("images/language.png", ImgBytes)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	return languages
+	// return languages
 
 }
 

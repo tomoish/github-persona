@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"encoding/json"
 	"net/http"
-	"github.com/tomoish/readme/funcs"
 )
 
 const (

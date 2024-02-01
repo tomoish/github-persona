@@ -34,11 +34,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
-	CreateLanguageImg()
+	funcs.CreateLanguageImg()
 }
 
 func getCharacterHandler(w http.ResponseWriter, r *http.Request) {
-	CreateCharacterImg()
+	funcs.CreateCharacterImg()
 }
 
 func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
