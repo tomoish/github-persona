@@ -44,7 +44,6 @@ type response struct {
 	} `json:"data"`
 }
 
-
 func calculateStreak(weeks []struct {
 	ContributionDays []struct {
 		ContributionCount int `json:"contributionCount"`
@@ -66,8 +65,7 @@ func calculateStreak(weeks []struct {
 	return maxStreak
 }
 
-func GetLongestStreak(username string) (int, error) {
-	// ctx := context.Background()
+func GetCommitHistory(username string) (int, []int, int, error) {
 	query := fmt.Sprintf(query_frame, username)
 
 	request := GraphQLQuery{Query: query}
@@ -87,20 +85,29 @@ func GetLongestStreak(username string) (int, error) {
 	client := &http.Client{}
 	resp, _ := client.Do(req)
 
-	fmt.Println("response1: ", resp)
+	// fmt.Println("response1: ", resp)
 
 	var res response
 	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
 		log.Fatalf("Decoder failed: %v", err)
 	}
 
-	fmt.Println("response: ", res.Data.User.ContributionsCollection.ContributionCalendar.Weeks)
+	var dailyCommits []int
+	maxCommit := 0
+	for weeklyCommits := range res.Data.User.ContributionsCollection.ContributionCalendar.Weeks {
+		for dailyCommit := range res.Data.User.ContributionsCollection.ContributionCalendar.Weeks[weeklyCommits].ContributionDays {
+			num_commits := res.Data.User.ContributionsCollection.ContributionCalendar.Weeks[weeklyCommits].ContributionDays[dailyCommit].ContributionCount
+			dailyCommits = append(dailyCommits, num_commits)
+			if num_commits > maxCommit {
+				maxCommit = num_commits
+			}
+		}
+	}
 
-	// res, err := makeRequest(ctx, query)
-	// if err != nil {
-	//     return 0, err
-	// }
+	// fmt.Println("response: ", res.Data.User.ContributionsCollection.ContributionCalendar.Weeks)
 
-	// コミットストリークを計算
-	return calculateStreak(res.Data.User.ContributionsCollection.ContributionCalendar.Weeks), nil
+	// fmt.Println("dailyCommits: ", dailyCommits)
+	// fmt.Println("length of dailyCommits: ", len(dailyCommits))
+
+	return calculateStreak(res.Data.User.ContributionsCollection.ContributionCalendar.Weeks), dailyCommits, maxCommit, err
 }

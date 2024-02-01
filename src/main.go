@@ -10,6 +10,7 @@ import (
 	"github.com/google/go-github/v58/github"
 
 	"github.com/tomoish/readme/funcs"
+	"github.com/tomoish/readme/graphs"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -50,14 +51,37 @@ func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	streak, err := funcs.GetLongestStreak(username)
+	streak, dailyCommits, _, err := funcs.GetCommitHistory(username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprint(w, streak)
+	fmt.Fprint(w, streak, dailyCommits)
 
+}
+
+func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
+
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
+
+	if username == "" {
+		http.Error(w, "username is required", http.StatusBadRequest)
+		return
+	}
+
+	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 600)
+	if err != nil {
+		fmt.Println(err)
+	}
+	http.ServeFile(w, r, "./images/commits_history.png")
 }
 
 func main() {
@@ -65,6 +89,7 @@ func main() {
 	http.HandleFunc("/streak", getCommitStreakHandler)
 	http.HandleFunc("/language", getLanguageHandler)
 	http.HandleFunc("/character", getCharacterHandler)
+	http.HandleFunc("/history", getHistoryHandler)
 	fmt.Println("Hello, World!")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

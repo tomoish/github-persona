@@ -25,8 +25,5 @@ package funcs
 // 	SaveImage(filename string, imgBytes []byte) error
 // }
 
-
 // コントリビューションの合計と日毎のコントリビューション数を取得する関数
 // GetLongestStreak(username string) (int, error)
-
-
