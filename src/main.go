@@ -39,6 +39,13 @@ func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
 
 func getCharacterHandler(w http.ResponseWriter, r *http.Request) {
 	funcs.CreateCharacterImg()
+<<<<<<< HEAD
+=======
+}
+
+func getCharacterLanguageHandler(w http.ResponseWriter, r *http.Request) {
+	funcs.CreateCharacterLanguageImg()
+>>>>>>> 3242d07 (feat: merge language character)
 }
 
 func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +97,7 @@ func main() {
 	http.HandleFunc("/language", getLanguageHandler)
 	http.HandleFunc("/character", getCharacterHandler)
 	http.HandleFunc("/history", getHistoryHandler)
+	http.HandleFunc("/character_language", getCharacterLanguageHandler)
 	fmt.Println("Hello, World!")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

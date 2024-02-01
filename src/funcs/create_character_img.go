@@ -35,7 +35,11 @@ func CreateCharacterImg() {
 	}
 
 	// 画像をファイルに保存
+<<<<<<< HEAD
 	err = SaveImage("images/merged.png", mergedImage)
+=======
+	err = SaveImage("funcs/images/merged.png", mergedImage)
+>>>>>>> 3242d07 (feat: merge language character)
 	if err != nil {
 		fmt.Println(err)
 		return

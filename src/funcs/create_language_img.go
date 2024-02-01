@@ -106,7 +106,11 @@ func CreateLanguageImg() {
 	ImgBytes, _ := GenerateLanguageUsageGraph(languages, 600, 250)
 
 	// 画像をファイルに保存
+<<<<<<< HEAD
 	err = SaveImage("images/language.png", ImgBytes)
+=======
+	err = SaveImage("funcs/images/language.png", ImgBytes)
+>>>>>>> 3242d07 (feat: merge language character)
 	if err != nil {
 		fmt.Println(err)
 	}
