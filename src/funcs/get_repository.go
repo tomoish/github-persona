@@ -7,8 +7,8 @@ import (
 	"net/http"
 )
 
-// / GraphQLQuery はGraphQLのクエリを格納するための構造体です
-type GraphQLQuery struct {
+// / GraphQLQueries はGraphQLのクエリを格納するための構造体です
+type GraphQLQueries struct {
 	Query string `json:"query"`
 }
 
@@ -20,7 +20,7 @@ type Repository struct {
 }
 
 // レポジトリ取得の際のGraphQLのレスポンスを格納するための構造体です
-type GraphQLResponse struct {
+type GraphQLResponses struct {
 	Data struct {
 		User struct {
 			RepositoriesContributedTo struct {
@@ -76,7 +76,7 @@ func GetRepositories(username, token string) ([]Repository, error) {
 
 	// GraphQL APIにリクエストを送信
 	url := "https://api.github.com/graphql"
-	reqBody := GraphQLQuery{Query: query}
+	reqBody := GraphQLQueries{Query: query}
 	reqBodyJSON, err := json.Marshal(reqBody)
 	if err != nil {
 		fmt.Println("JSON Marshal Error:", err)
@@ -100,7 +100,7 @@ func GetRepositories(username, token string) ([]Repository, error) {
 	defer resp.Body.Close()
 
 	// レスポンスをパース
-	var response GraphQLResponse
+	var response GraphQLResponses
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
 		fmt.Println("JSON Decode Error:", err)

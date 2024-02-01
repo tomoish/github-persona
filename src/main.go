@@ -34,11 +34,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLanguageHandler(w http.ResponseWriter, r *http.Request) {
-	CreateLanguageImg()
+	funcs.CreateLanguageImg()
 }
 
 func getCharacterHandler(w http.ResponseWriter, r *http.Request) {
-	CreateCharacterImg()
+	funcs.CreateCharacterImg()
 }
 
 func getCommitStreakHandler(w http.ResponseWriter, r *http.Request) {
@@ -95,5 +95,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
+
+	username := "kou7306"
+
+	// GitHubのアクセストークンを設定
+	token, _ := funcs.GetTokens(0)
+
+	// データを取得
+	totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchDataInTimeRange(token, username)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("totalCommitContributions: ", totalCommitContributions)
+	fmt.Println("totalStarredRepositories: ", totalStarredRepositories)
+	fmt.Println("totalIssueContributions: ", totalIssueContributions)
+	fmt.Println("totalPullRequestContributions: ", totalPullRequestContributions)
+	fmt.Println("totalRepositoryContributions: ", totalRepositoryContributions)
 
 }
