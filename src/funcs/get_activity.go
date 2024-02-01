@@ -2,17 +2,11 @@ package funcs
 
 import (
 	"bytes"
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
-const (
-	// GitHubのアクセストークン
-	accessToken = "YOUR_GITHUB_ACCESS_TOKEN"
-	// GitHubのGraphQL APIエンドポイント
-	apiEndpoint = "https://api.github.com/graphql"
-)
 // / GraphQLQuery はGraphQLのクエリを格納するための構造体です
 type GraphQLQuery struct {
 	Query string `json:"query"`
@@ -23,10 +17,10 @@ type response struct {
 	Data struct {
 		User struct {
 			ContributionsCollection struct {
-				TotalCommitContributions        int `graphql:"totalCommitContributions"`
-				TotalIssueContributions         int `graphql:"totalIssueContributions"`
-				TotalPullRequestContributions   int `graphql:"totalPullRequestContributions"`
-				TotalRepositoryContributions    int `graphql:"totalRepositoryContributions"`
+				TotalCommitContributions      int `graphql:"totalCommitContributions"`
+				TotalIssueContributions       int `graphql:"totalIssueContributions"`
+				TotalPullRequestContributions int `graphql:"totalPullRequestContributions"`
+				TotalRepositoryContributions  int `graphql:"totalRepositoryContributions"`
 			} `graphql:"contributionsCollection"`
 			StarredRepositories struct {
 				TotalCount int `graphql:"totalCount"`
@@ -35,8 +29,7 @@ type response struct {
 	}
 }
 
-
-func fetchDataInTimeRange(token string, username string) (int, int, int, int, int, error) {
+func FetchDataInTimeRange(token string, username string) (int, int, int, int, int, error) {
 	const query_frame = `
 	{
 		user(login: "%s") {
@@ -95,7 +88,6 @@ func fetchDataInTimeRange(token string, username string) (int, int, int, int, in
 
 	return totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, nil
 }
-
 
 // func main() {
 // 	// ユーザー名

@@ -29,11 +29,11 @@ package funcs
 // 				rank="A"
 // 			case rank < 10000:
 // 				rank="A+"
-// 			case 10000 <= rank:	
+// 			case 10000 <= rank:
 // 				rank="S"
 // 			default:
 // 				rank="C-"
-				
+
 // 		}
 
 // 		// 言語ごとの割合を持ってくる
@@ -53,7 +53,7 @@ package funcs
 // 		// 一位がHTML,CSS,JavaScript,TypeScriptじゃない場合
 // 		if languages[0].Name != "HTML" && languages[0].Name != "CSS"  && languages[0].Name != "JavaScript" && languages[0].Name != "TypeScript"{
 // 			topLanguage = append(topLanguage, languages[0])
-		
+
 // 		} else {
 // 			temp = append(temp, languages[0])
 // 		}
@@ -81,7 +81,7 @@ package funcs
 // 						topLanguage = append(topLanguage, temp[0])
 // 						topLanguage = append(topLanguage, temp[1])
 // 					}
-						
+
 // 					}
 // 				}
 // 			}
@@ -89,4 +89,3 @@ package funcs
 
 // 		return rank
 // ]
-

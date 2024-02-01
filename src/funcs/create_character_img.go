@@ -1,7 +1,7 @@
 package funcs
+
 import (
 	"fmt"
-
 )
 
 func CreateCharacterImg() {

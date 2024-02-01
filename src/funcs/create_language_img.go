@@ -5,11 +5,10 @@ import (
 	"time"
 
 	"github.com/patrickmn/go-cache"
-
 )
 
 func CreateLanguageImg() {
-// 言語ごとの色をここで決める
+	// 言語ごとの色をここで決める
 	colordict := map[string]string{
 		"HTML":   "#E34F26",
 		"CSS":    "#ffffff",
