@@ -33,7 +33,7 @@ func DrawGauge(percentage float64) ([]byte, error) {
 	dc.Stroke()
 
 	// ゲージの進捗部分の描画
-	progressAngle := 2 * math.Pi * percentage
+	progressAngle := 2 * math.Pi * 60
 	dc.SetRGB(0, 0.5, 0.7)
 	dc.SetLineWidth(lineWidth)
 	dc.DrawArc(S/2, S/2, radius, startAngle, startAngle+progressAngle)
