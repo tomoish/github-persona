@@ -18,7 +18,6 @@ type LanguageStat struct {
 func drawRoundedRectangle(dc *gg.Context, x, y, w, h, r float64) {
 	dc.DrawRectangle(x, y, w, h)
 	dc.Fill()
-
 }
 
 func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]byte, error) {
@@ -37,7 +36,7 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 
 	// 帯グラフの基準点
 	barX := 40.0
-	barY := 100.0
+	barY := 120.0
 	barHeight := 10.0
 	barWidth := float64(width) - 80.0
 

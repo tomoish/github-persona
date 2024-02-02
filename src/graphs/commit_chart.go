@@ -58,7 +58,7 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	p.Y.Max = float64(maxCommits) + 5
 
 	// ラベルの外に余白を持つ
-	p.Title.Padding = 10   // タイトル周りの余白
+	p.Title.Padding = 10  // タイトル周りの余白
 	p.X.Label.Padding = 2 // X軸ラベル周りの余白
 	p.Y.Label.Padding = 2 // Y軸ラベル周りの余白
 
