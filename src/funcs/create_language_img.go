@@ -7,7 +7,7 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-func CreateLanguageImg() {
+func CreateLanguageImg(username string) {
 	// 言語ごとの色をここで決める
 	colordict := map[string]string{
 		"HTML":   "#E34F26",
@@ -37,8 +37,7 @@ func CreateLanguageImg() {
 		cachedData, _ := c.Get(key)
 		// 型アサーションを行い、int型に変換
 		cachedIntData, _ := cachedData.(int)
-		fmt.Println("cachedIntData")
-		fmt.Println(cachedIntData)
+
 		// トークンを取得する
 		token, newCachedData = GetTokens(cachedIntData)
 
@@ -48,7 +47,7 @@ func CreateLanguageImg() {
 	}
 
 	// ユーザーのリポジトリ情報を取得
-	username := "kou7306"
+
 	repos, err := GetRepositories(username, token)
 	fmt.Printf("repos: %v\n", repos)
 	if err != nil {
@@ -100,8 +99,6 @@ func CreateLanguageImg() {
 			Color:   colorCode,
 		})
 	}
-
-	fmt.Printf("languages: %v\n", languages)
 
 	ImgBytes, _ := GenerateLanguageUsageGraph(languages, 600, 400)
 

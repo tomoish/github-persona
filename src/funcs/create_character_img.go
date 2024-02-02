@@ -2,20 +2,17 @@ package funcs
 
 import (
 	"fmt"
+	"math"
 )
 
-func CreateCharacterImg() {
-	// キャラクター画像のパス
-	characterPath := "images/character.png"
-	// ゲージ画像のパス
-	gaugePath := "images/gauge.png"
-
+func CreateCharacterImg(characterPath, gaugePath string, contribution, level int) {
 	// ゲージ画像生成のためのチャネル
 	gaugeImageChan := make(chan []byte)
+	percentage := (float64(contribution) - float64(math.Pow(float64(level), 2))) / float64(math.Pow(float64(level+1), 2))
 
 	// ゲージ画像を非同期で生成
 	go func() {
-		GaugeBytes, _ := DrawGauge(0.5)
+		GaugeBytes, _ := DrawGauge(percentage)
 		gaugeImageChan <- GaugeBytes
 	}()
 
