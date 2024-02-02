@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/http"
 
 	"github.com/tomoish/readme/funcs"
 	"github.com/tomoish/readme/graphs"
