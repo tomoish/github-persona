@@ -18,21 +18,22 @@ func GetTokens(currentIndex int) (string, int) {
 	}
 	// 個人アクセストークンを環境変数から取得
 	// トークンをスライスに格納
-	tokens := []string{
-		os.Getenv("GITHUB_TOKEN1"),
-		os.Getenv("GITHUB_TOKEN2"),
-	}
+	// tokens := []string{
+	// 	os.Getenv("GITHUB_TOKEN1"),
+	// 	os.Getenv("GITHUB_TOKEN2"),
+	// }
+	tokens :=os.Getenv("GITHUB_TOKEN"),
 
 	// ランダムシードの初期化
 	rand.Seed(time.Now().UnixNano())
 
 
 	// 元の数字をランダムな数字（0~3）で置き換え
-	currentIndex= rand.Intn(2) // 0から3のランダムな数
+	// currentIndex= rand.Intn(2) // 0から3のランダムな数
 
 
 
-	key := tokens[currentIndex]
+	// key := tokens[currentIndex]
 
 	fmt.Println("key: ", currentIndex)
 

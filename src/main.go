@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"strconv"
-
 	"github.com/tomoish/readme/funcs"
 	"github.com/tomoish/readme/graphs"
+	"log"
+	"net/http"
+	"strconv"
+	"os"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
