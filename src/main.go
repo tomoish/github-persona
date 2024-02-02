@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"github.com/tomoish/readme/funcs"
+	"github.com/tomoish/readme/graphs"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {

@@ -59,8 +59,8 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 
 	// ラベルの外に余白を持つ
 	p.Title.Padding = 10   // タイトル周りの余白
-	p.X.Label.Padding = 10 // X軸ラベル周りの余白
-	p.Y.Label.Padding = 10 // Y軸ラベル周りの余白
+	p.X.Label.Padding = 2 // X軸ラベル周りの余白
+	p.Y.Label.Padding = 2 // Y軸ラベル周りの余白
 
 	// DefaultTextHandler is the default text handler used for text processing.
 
