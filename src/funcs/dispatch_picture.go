@@ -1,11 +1,11 @@
-package main
+package funcs
 
 import (
 	"fmt"
 	"strings"
 )
 
-func dispatchPictureBasedOnProfession(profession string) string {
+func DispatchPictureBasedOnProfession(profession string) string {
 	// 特定の職業または状態に応じた画像ファイル名を返す
 	switch profession {
 	case "赤ちゃん":
@@ -80,10 +80,10 @@ func dispatchPictureBasedOnProfession(profession string) string {
 // 	fmt.Println(picture) // b1.png などの出力を期待
 // }
 
-func main() {
-    // デモ
-    fmt.Println(dispatchPictureBasedOnProfession("赤ちゃん")) // "c-.png"
-    fmt.Println(dispatchPictureBasedOnProfession("少年")) // "c.png"
-    fmt.Println(dispatchPictureBasedOnProfession("冒険者見習い")) // "c+.png"
-    fmt.Println(dispatchPictureBasedOnProfession("上級 攻撃魔法")) // 他のロジックに基づいて決定される画像
-}
+// func main() {
+// 	// デモ
+// 	fmt.Println(DispatchPictureBasedOnProfession("赤ちゃん"))    // "c-.png"
+// 	fmt.Println(DispatchPictureBasedOnProfession("少年"))      // "c.png"
+// 	fmt.Println(DispatchPictureBasedOnProfession("冒険者見習い"))  // "c+.png"
+// 	fmt.Println(DispatchPictureBasedOnProfession("上級 攻撃魔法")) // 他のロジックに基づいて決定される画像
+// }
