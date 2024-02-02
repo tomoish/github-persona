@@ -2,8 +2,9 @@ package funcs
 
 import (
 	"bytes"
-	"github.com/fogleman/gg"
 	"strconv"
+
+	"github.com/fogleman/gg"
 )
 
 // GenerateGitHubStatsImage 関数はユーザー統計情報を受け取り、グラフィカルな表現を画像として生成します。
