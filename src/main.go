@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/tomoish/readme/funcs"
-	"github.com/tomoish/readme/graphs"
+
 	"log"
 	"net/http"
-	"strconv"
 	"os"
+	"strconv"
+
+	"github.com/tomoish/readme/funcs"
+	"github.com/tomoish/readme/graphs"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -147,7 +149,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
 			// キャラクター画像の生成
-			funcs.CreateCharacterImg( filePath ,"images/gauge.png", total, level)
+			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level)
 
 			// コミットカレンダー画像の生成
 
@@ -189,7 +191,7 @@ func main() {
 	// http.HandleFunc("/background", getBackgroundHandler)
 	http.HandleFunc("/create", createHandler)
 	fmt.Println("Hello, World!")
-	err := http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
