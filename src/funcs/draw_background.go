@@ -42,7 +42,7 @@ func DrawBackground(username, level, kind string) {
 	x2, y2 := (13*Width)/100, (25*Height)/100 // テキスト2の座標(テキストの中央に持つ)
 	dc.DrawStringAnchored(text2, float64(x2), float64(y2), 0.5, 0.5)
 
-	if err := dc.LoadFontFace("NotoSansJP-ExtraLight.ttf", 30); err != nil {
+	if err := dc.LoadFontFace("ipaexg.ttf", 30); err != nil {
 		fmt.Println("フォントのロードに失敗しました:", err)
 	}
 	text3 := kind
