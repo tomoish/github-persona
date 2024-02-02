@@ -122,8 +122,7 @@ func getFinalProfession(profession string, rank string, route string) string {
 // 	fmt.Println(judgeProfession("S", []string{"Python"}, []float64{100}))            // 神
 // }
 
-
-// func dispatchPictureBasedOnProfession(profession string) string {
+// func DispatchPictureBasedOnProfession(profession string) string {
 //     rankToPrefix := map[string]string{
 //         "初級":   "b",
 //         "中級":   "b+",

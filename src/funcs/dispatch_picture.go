@@ -81,9 +81,9 @@ func DispatchPictureBasedOnProfession(profession string) string {
 // }
 
 // func main() {
-//     // デモ
-//     fmt.Println(dispatchPictureBasedOnProfession("赤ちゃん")) // "c-.png"
-//     fmt.Println(dispatchPictureBasedOnProfession("少年")) // "c.png"
-//     fmt.Println(dispatchPictureBasedOnProfession("冒険者見習い")) // "c+.png"
-//     fmt.Println(dispatchPictureBasedOnProfession("上級 攻撃魔法")) // 他のロジックに基づいて決定される画像
+// 	// デモ
+// 	fmt.Println(DispatchPictureBasedOnProfession("赤ちゃん"))    // "c-.png"
+// 	fmt.Println(DispatchPictureBasedOnProfession("少年"))      // "c.png"
+// 	fmt.Println(DispatchPictureBasedOnProfession("冒険者見習い"))  // "c+.png"
+// 	fmt.Println(DispatchPictureBasedOnProfession("上級 攻撃魔法")) // 他のロジックに基づいて決定される画像
 // }
