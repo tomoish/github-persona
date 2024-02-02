@@ -119,6 +119,15 @@ func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 // 画像生成エンドポイント
 
 func createHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")                   // すべてのオリジンからのアクセスを許可
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS") // 許可するHTTPメソッド
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+
+	// OPTIONSリクエストへの対応（プリフライトリクエスト）
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	w.Header().Set("Cache-Control", "public, max-age=3600")
 
 	queryValues := r.URL.Query()
