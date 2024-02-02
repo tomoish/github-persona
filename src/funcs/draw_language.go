@@ -49,7 +49,6 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 		return languages[i].Percent > languages[j].Percent
 	})
 
-	fmt.Printf("languages: %v\n", languages)
 
 	// 5%未満の言語を抽出し、"others"としてまとめる
 	var otherPercent float64
@@ -65,7 +64,6 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 		}
 	}
 
-	fmt.Printf("languages: %v\n", newLanguages)
 
 	// "others"を追加
 	if otherPercent > 0 {
