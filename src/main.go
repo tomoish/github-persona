@@ -139,11 +139,15 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			//レベル、職業判定
 			profession, level := funcs.JudgeRank(language, stats)
 
+			//対象のキャラの画像を取得
+			img := funcs.DispatchPictureBasedOnProfession(profession)
+			filePath := fmt.Sprintf("characterimages/%s", img)
+
 			// 背景画像の生成
 			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
 			// キャラクター画像の生成
-			funcs.CreateCharacterImg("characterimages/s.png", "images/gauge.png", total, level)
+			funcs.CreateCharacterImg( filePath ,"images/gauge.png", total, level)
 
 			// コミットカレンダー画像の生成
 
@@ -185,7 +189,7 @@ func main() {
 	// http.HandleFunc("/background", getBackgroundHandler)
 	http.HandleFunc("/create", createHandler)
 	fmt.Println("Hello, World!")
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}

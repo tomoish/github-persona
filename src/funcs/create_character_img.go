@@ -8,8 +8,8 @@ import (
 func CreateCharacterImg(characterPath, gaugePath string, total, level int) {
 	// ゲージ画像生成のためのチャネル
 	gaugeImageChan := make(chan []byte)
-	percentage := (float64(total) - float64(math.Pow(float64(level), 2))) / float64(math.Pow(float64(level+1), 2) - math.Pow(float64(level), 2))
-
+	percentage := (float64(total) - float64(math.Pow(float64(level), 2))) / (float64(math.Pow(float64(level+1), 2) - math.Pow(float64(level), 2)))
+	fmt.Println(percentage)
 	// ゲージ画像を非同期で生成
 	go func() {
 		GaugeBytes, _ := DrawGauge(percentage)

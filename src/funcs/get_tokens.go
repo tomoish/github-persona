@@ -2,9 +2,10 @@ package funcs
 
 import (
 	"fmt"
-	"os"
 	"math/rand"
+	"os"
 	"time"
+
 	"github.com/joho/godotenv"
 )
 
@@ -22,11 +23,11 @@ func GetTokens(currentIndex int) (string, int) {
 	// 	os.Getenv("GITHUB_TOKEN1"),
 	// 	os.Getenv("GITHUB_TOKEN2"),
 	// }
-	tokens :=os.Getenv("GITHUB_TOKEN"),
+	tokens,_ :=os.Getenv("GITHUB_TOKEN1"),
 
 	// ランダムシードの初期化
-	rand.Seed(time.Now().UnixNano())
-
+	// rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	// 元の数字をランダムな数字（0~3）で置き換え
 	// currentIndex= rand.Intn(2) // 0から3のランダムな数
@@ -35,7 +36,6 @@ func GetTokens(currentIndex int) (string, int) {
 
 	// key := tokens[currentIndex]
 
-	fmt.Println("key: ", currentIndex)
 
-	return key, currentIndex
+	return tokens, currentIndex
 }
