@@ -28,7 +28,7 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 
 	p := plot.New()
 
-	bgColor := color.RGBA{R: 51, G: 61, B: 79, A: 255}
+	bgColor := color.RGBA{R: 51, G: 51, B: 51, A: 255}
 	p.BackgroundColor = bgColor
 
 	points := make(plotter.XYs, len(x))
@@ -59,8 +59,8 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 
 	// ラベルの外に余白を持つ
 	p.Title.Padding = 10   // タイトル周りの余白
-	p.X.Label.Padding = 10 // X軸ラベル周りの余白
-	p.Y.Label.Padding = 10 // Y軸ラベル周りの余白
+	p.X.Label.Padding = 2 // X軸ラベル周りの余白
+	p.Y.Label.Padding = 2 // Y軸ラベル周りの余白
 
 	// DefaultTextHandler is the default text handler used for text processing.
 
@@ -77,7 +77,7 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 
 	p.X.Padding, p.Y.Padding = 0, 0
 
-	if err := p.Save(8*vg.Inch, 4*vg.Inch, "./images/commits_history.png"); err != nil {
+	if err := p.Save(5*vg.Inch, 2*vg.Inch, "./images/commits_history.png"); err != nil {
 		panic(err)
 	}
 
