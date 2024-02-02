@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strconv"
 	"os"
-
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -72,30 +71,30 @@ import (
 
 // }
 
-// func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
+func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 
-// 	// queryValues := r.URL.Query()
-// 	// username := queryValues.Get("username")
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
 
-// 	// if username == "" {
-// 	// 	http.Error(w, "username is required", http.StatusBadRequest)
-// 	// 	return
-// 	// }
+	if username == "" {
+		http.Error(w, "username is required", http.StatusBadRequest)
+		return
+	}
 
-// 	username := "kou7306"
+	// username := "kou7306"
 
-// 	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	http.ServeFile(w, r, "./images/commits_history.png")
-// }
+	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+	if err != nil {
+		fmt.Println(err)
+	}
+	http.ServeFile(w, r, "./images/commits_history.png")
+}
 
 // func getuserHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -116,8 +115,10 @@ import (
 // }
 
 // 画像生成エンドポイント
+
 func createhandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "public, max-age=3600")
+
 	queryValues := r.URL.Query()
 	username := queryValues.Get("username")
 	if r.Method == http.MethodGet {
@@ -180,13 +181,13 @@ func main() {
 	// http.HandleFunc("/streak", getCommitStreakHandler)
 	// http.HandleFunc("/language", getLanguageHandler)
 	// http.HandleFunc("/character", getCharacterHandler)
-	// http.HandleFunc("/history", getHistoryHandler)
+	http.HandleFunc("/history", getHistoryHandler)
 	// http.HandleFunc("/user", getuserHandler)
 	// http.HandleFunc("/merge", mergeAllContents)
 	// http.HandleFunc("/background", getBackgroundHandler)
-	http.HandleFunc("/create", createhandler)
+	http.HandleFunc("/create", createHandler)
 	fmt.Println("Hello, World!")
-	err := http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
@@ -211,7 +212,7 @@ func main() {
 	// fmt.Println("totalIssueContributions: ", totalIssueContributions)
 	// fmt.Println("totalPullRequestContributions: ", totalPullRequestContributions)
 	// fmt.Println("totalRepositoryContributions: ", totalRepositoryContributions)
-
+	fmt.Println(funcs.JudgeProfession("C+", []string{"Go"}, []float64{100}))
 }
 		// } else if r.Method == http.MethodPost {
 		//     // POSTリクエストの処理
