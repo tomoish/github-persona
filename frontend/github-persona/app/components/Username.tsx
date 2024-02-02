@@ -40,8 +40,8 @@ function Username() {
   const handleSubmit = async (e: FormEvent) => {
     console.log(username);
     e.preventDefault();
-    setImageUrl("http://localhost:8080/create?username=" + username);
-    console.log("http://localhost:8080/create?username=" + username);
+    setImageUrl("https://read-413014.an.r.appspot.com/create?username=" + username);
+    console.log("https://read-413014.an.r.appspot.com/create?username=" + username);
     setLoading(true);
     console.log(imageUrl);
     console.log(loading);

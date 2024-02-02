@@ -1,7 +1,6 @@
 "use client";
 import {
-  type Container,
-  type ISourceOptions
+  type Container
 } from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { useEffect, useMemo, useState } from "react";
@@ -34,7 +33,7 @@ export default function Home() {
     console.log(container);
   };
 
-  const options: ISourceOptions = useMemo(
+  const options: any = useMemo(
     () => ({
       "particles": {
         "number": {
