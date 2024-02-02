@@ -103,10 +103,10 @@ func CreateLanguageImg() {
 
 	fmt.Printf("languages: %v\n", languages)
 
-	ImgBytes, _ := GenerateLanguageUsageGraph(languages, 600, 250)
+	ImgBytes, _ := GenerateLanguageUsageGraph(languages, 600, 400)
 
 	// 画像をファイルに保存
-	err = SaveImage("images/language.png", ImgBytes)
+	err = SaveImage("./images/language.png", ImgBytes)
 	if err != nil {
 		fmt.Println(err)
 	}

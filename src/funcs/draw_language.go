@@ -29,15 +29,15 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 	dc.SetRGB(0.2, 0.24, 0.31) // 背景色（暗い青灰色）
 	drawRoundedRectangle(dc, 0, 0, float64(width), float64(height), cornerRadius)
 	dc.SetRGB(1, 1, 1)
-	err := dc.LoadFontFace("Roboto-Medium.ttf", 30) // フォントとサイズの設定が必要
+	err := dc.LoadFontFace("Roboto-Medium.ttf", 45) // フォントとサイズの設定が必要
 	if err != nil {
 		fmt.Println(err)
 	}
-	dc.DrawStringAnchored("Most Used Languages", float64(width)/2, 30, 0.5, 0.5)
+	dc.DrawStringAnchored("Most Used Languages", float64(width)/2, 50, 0.5, 0.5)
 
 	// 帯グラフの基準点
 	barX := 40.0
-	barY := 60.0
+	barY := 100.0
 	barHeight := 10.0
 	barWidth := float64(width) - 80.0
 
@@ -88,8 +88,8 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 
 	// 凡例の描画
 	legendX := 40.0
-	legendY := barY + barHeight + 20.0             // 帯グラフの下に余白をとる
-	err = dc.LoadFontFace("Roboto-Medium.ttf", 25) // 凡例のフォントサイズ
+	legendY := barY + barHeight + 40.0             // 帯グラフの下に余白をとる
+	err = dc.LoadFontFace("Roboto-Medium.ttf", 28) // 凡例のフォントサイズ
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -98,12 +98,12 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 	for _, lang := range newLanguages {
 		// 色のサンプルを描画
 		dc.SetHexColor(lang.Color)
-		dc.DrawCircle(legendX+5.0+math.Mod(float64(int(i)), 2.0)*300.0, legendY+6, 5)
+		dc.DrawCircle(legendX+5.0+math.Mod(float64(int(i)), 2.0)*300.0, legendY+30, 5)
 		dc.Fill()
 
 		// 言語名と割合を描画
 		dc.SetRGB(1, 1, 1)
-		dc.DrawString(fmt.Sprintf("%s %.2f%%", lang.Name, lang.Percent), legendX+20.0+math.Mod(float64(int(i)), 2.0)*300.0, legendY+15)
+		dc.DrawString(fmt.Sprintf("%s %.2f%%", lang.Name, lang.Percent), legendX+20.0+math.Mod(float64(int(i)), 2.0)*300.0, legendY+45)
 		i += 1.0
 		legendY = legendY + math.Mod(float64(int(i)+1), 2.0)*40.0
 
