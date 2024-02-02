@@ -51,12 +51,12 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 
 	fmt.Printf("languages: %v\n", languages)
 
-	// 1%未満の言語を抽出し、"others"としてまとめる
+	// 5%未満の言語を抽出し、"others"としてまとめる
 	var otherPercent float64
 	// 削除対象の言語を探し、スライスから削除
 	newLanguages := make([]LanguageStat, 0)
 	for _, lang := range languages {
-		if lang.Percent < 3.0 {
+		if lang.Percent < 5.0 {
 			otherPercent += lang.Percent
 
 		} else {

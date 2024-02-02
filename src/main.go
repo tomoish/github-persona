@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/tomoish/readme/funcs"
-	"github.com/tomoish/readme/graphs"
 	"log"
 	"net/http"
-	"strconv"
 	"os"
-
+	"strconv"
+	"github.com/tomoish/readme/funcs"
+	"github.com/tomoish/readme/graphs"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -122,52 +121,50 @@ func createhandler(w http.ResponseWriter, r *http.Request) {
 	username := queryValues.Get("username")
 	if r.Method == http.MethodGet {
 		// GETリクエストの処理
-      // 一意の画像ファイル名の生成（例: ユーザー名とタイムスタンプを組み合わせる）
-	  imageFileName := fmt.Sprintf("result_%s.png", username)
+		// 一意の画像ファイル名の生成（例: ユーザー名とタイムスタンプを組み合わせる）
+		imageFileName := fmt.Sprintf("result_%s.png", username)
 
-	  // 画像ファイルの存在チェック
-	  if _, err := os.Stat(imageFileName); os.IsNotExist(err) {
-		  // 画像が存在しない場合は、新たに生成
+		// 画像ファイルの存在チェック
+		if _, err := os.Stat(imageFileName); os.IsNotExist(err) {
+			// 画像が存在しない場合は、新たに生成
 
-		  // 画像生成の処理...
-		// stats取得と画像生成
-		stats := funcs.CreateUserStats(username)
-		total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
-		// 言語画像の生成
-		language := funcs.CreateLanguageImg(username)
-		//レベル、職業判定
-		profession, level := funcs.JudgeRank(language, stats)
+			// 画像生成の処理...
+			// stats取得と画像生成
+			stats := funcs.CreateUserStats(username)
+			total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
+			// 言語画像の生成
+			language := funcs.CreateLanguageImg(username)
+			//レベル、職業判定
+			profession, level := funcs.JudgeRank(language, stats)
 
-		// 背景画像の生成
-		funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
+			// 背景画像の生成
+			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
-		// キャラクター画像の生成
-		funcs.CreateCharacterImg("characterimages/s.png", "images/gauge.png", total, level)
+			// キャラクター画像の生成
+			funcs.CreateCharacterImg("characterimages/s.png", "images/gauge.png", total, level)
 
-		// コミットカレンダー画像の生成
+			// コミットカレンダー画像の生成
 
-		_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+			_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			// 全て合体して画像を保存
+			funcs.Merge_all("./images/background.png", "./images/stats.png", "./images/generate_character.png", "./images/language.png", "./images/commits_history.png", imageFileName)
 		}
 
-		err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
-		if err != nil {
-			fmt.Println(err)
-		}
+		// キャッシュ制御ヘッダーを設定
+		w.Header().Set("Cache-Control", "public, max-age=3600")
 
-		  // 全て合体して画像を保存
-		  funcs.Merge_all("./images/background.png", "./images/stats.png", "./images/generate_character.png", "./images/language.png", "./images/commits_history.png", imageFileName)
-	  }
-
-	  // キャッシュ制御ヘッダーを設定
-	  w.Header().Set("Cache-Control", "public, max-age=3600")
-
-	  // 生成済みの画像ファイルをクライアントに返す
-	  http.ServeFile(w, r, imageFileName)
-
-
+		// 生成済みの画像ファイルをクライアントに返す
+		http.ServeFile(w, r, imageFileName)
 
 	} else {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -213,10 +210,11 @@ func main() {
 	// fmt.Println("totalRepositoryContributions: ", totalRepositoryContributions)
 
 }
-		// } else if r.Method == http.MethodPost {
-		//     // POSTリクエストの処理
-		// 	totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchData(username)
-		// 	if err != nil {
-		// 		fmt.Println(err)
-		// 		return
-		// 	}
+
+// } else if r.Method == http.MethodPost {
+//     // POSTリクエストの処理
+// 	totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchData(username)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}

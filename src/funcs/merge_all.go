@@ -31,7 +31,7 @@ func loadImage(filename string) (image.Image, error) {
 //原点（0, 0）は背景画像の左上隅
 
 // すべての画像のパスを受け取り、それらを合成した画像を生成する関数
-func Merge_all(nameImg, statsImg, characterImg, languageImg, dateImg ,filepath string) {
+func Merge_all(nameImg, statsImg, characterImg, languageImg, dateImg, filepath string) {
 	// 背景画像を黒で生成
 	// backgroundWidth := 2000 // 背景画像の幅
 	// backgroundHeight := 1900 // 背景画像の高さ
