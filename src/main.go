@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+
 	"github.com/tomoish/readme/funcs"
 	"github.com/tomoish/readme/graphs"
-
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +117,7 @@ func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 
 // 画像生成エンドポイント
 
-func createhandler(w http.ResponseWriter, r *http.Request) {
+func createHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "public, max-age=3600")
 
 	queryValues := r.URL.Query()
