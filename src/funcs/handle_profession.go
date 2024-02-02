@@ -1,11 +1,7 @@
 package funcs
 
-import (
-	"fmt"
-)
-
 // 職業を判定する関数
-func judgeProfession(rank string, topLanguages []string, percentages []float64) string {
+func JudgeProfession(rank string, topLanguages []string, percentages []float64) string {
 	// 職業のルートと言語を定義
 	magicRoute := map[string]string{
 		"TypeScript": "攻撃魔法", "R": "ネクロマンサー", "Flutter": "防御魔法",
@@ -119,15 +115,15 @@ func getFinalProfession(profession string, rank string) string {
 	return finalProfession
 }
 
-func main() {
-	fmt.Println(judgeProfession("C+", []string{"Go"}, []float64{100}))               // 召喚士
-	fmt.Println(judgeProfession("A", []string{"Python", "Java"}, []float64{20, 20})) // 特級 士官と騎士
-	fmt.Println(judgeProfession("C", []string{}, []float64{}))                       // 少年
-	fmt.Println(judgeProfession("B-", []string{"TypeScript"}, []float64{100}))       // 攻撃魔法の見習い
-	fmt.Println(judgeProfession("B", []string{"C"}, []float64{100}))                 // 初級 無法者
-	fmt.Println(judgeProfession("B+", []string{"Java"}, []float64{100}))             // 中級 騎士
-	fmt.Println(judgeProfession("A-", []string{"Rust"}, []float64{100}))             // 上級 回復術師
-	fmt.Println(judgeProfession("A", []string{"Go"}, []float64{100}))                // 特級 召喚士
-	fmt.Println(judgeProfession("A+", []string{"Assembly"}, []float64{100}))         // 賞金稼ぎのラスボス
-	fmt.Println(judgeProfession("S", []string{"Python"}, []float64{100}))            // 神
-}
+// func main() {
+// 	fmt.Println(judgeProfession("C+", []string{"Go"}, []float64{100}))               // 召喚士
+// 	fmt.Println(judgeProfession("A", []string{"Python", "Java"}, []float64{20, 20})) // 特級 士官と騎士
+// 	fmt.Println(judgeProfession("C", []string{}, []float64{}))                       // 少年
+// 	fmt.Println(judgeProfession("B-", []string{"TypeScript"}, []float64{100}))       // 攻撃魔法の見習い
+// 	fmt.Println(judgeProfession("B", []string{"C"}, []float64{100}))                 // 初級 無法者
+// 	fmt.Println(judgeProfession("B+", []string{"Java"}, []float64{100}))             // 中級 騎士
+// 	fmt.Println(judgeProfession("A-", []string{"Rust"}, []float64{100}))             // 上級 回復術師
+// 	fmt.Println(judgeProfession("A", []string{"Go"}, []float64{100}))                // 特級 召喚士
+// 	fmt.Println(judgeProfession("A+", []string{"Assembly"}, []float64{100}))         // 賞金稼ぎのラスボス
+// 	fmt.Println(judgeProfession("S", []string{"Python"}, []float64{100}))            // 神
+// }

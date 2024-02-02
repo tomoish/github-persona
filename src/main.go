@@ -186,5 +186,5 @@ func main() {
 	// fmt.Println("totalIssueContributions: ", totalIssueContributions)
 	// fmt.Println("totalPullRequestContributions: ", totalPullRequestContributions)
 	// fmt.Println("totalRepositoryContributions: ", totalRepositoryContributions)
-
+	fmt.Println(funcs.JudgeProfession("C+", []string{"Go"}, []float64{100}))
 }
