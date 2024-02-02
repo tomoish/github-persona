@@ -18,12 +18,12 @@ type UserStats struct {
 }
 
 // GetUserInfo は指定されたユーザー名に対する統計情報を取得します。
-func GetUserInfo(username, token string) (UserStats, error) {
+func GetUserInfo(username, token string) UserStats {
 	userStats := UserStats{}
 
 	// GraphQLクエリをbytes:\xe5\xaebytes:\x9f行し、bytes:\xe7\xb5bytes:\x90果を取得
-	query := `
-	{
+	query :=
+		`{
 	  user(login: "` + username + `") {
 	    contributionsCollection {
 	      totalCommitContributions
@@ -36,9 +36,10 @@ func GetUserInfo(username, token string) (UserStats, error) {
 	    }
 	  }
 	}`
+
 	data, err := executeQuery(query, token)
 	if err != nil {
-		return userStats, fmt.Errorf("query execution failed: %w", err)
+		return userStats
 	}
 
 	//bytes: \xe3\x83bytes:\xacスポンスデbytes:\xe3\x83\xbc\xe3\x82bytes:\xbfのbytes:\xe6bytes:\xa7bytes:\x8b造を定bytes:\xe7\xbebytes:\xa9
@@ -61,7 +62,7 @@ func GetUserInfo(username, token string) (UserStats, error) {
 	//bytes: \xe3\x83bytes:\xacスポンスデbytes:\xe3\x83\xbc\xe3\x82bytes:\xbfを解析
 	var response Response
 	if err := json.Unmarshal(data, &response); err != nil {
-		return userStats, fmt.Errorf("failed to unmarshal response data: %w", err)
+		return userStats
 	}
 
 	// UserStatsbytes: \xe6bytes:\xa7bytes:\x8b造体にbytes:\xe7\xb5bytes:\xb1計情報を格bytes:\xe7\xb4bytes:\x8d
@@ -71,7 +72,7 @@ func GetUserInfo(username, token string) (UserStats, error) {
 	userStats.TotalPRs = response.Data.User.ContributionsCollection.TotalPullRequestContributions
 	userStats.ContributedTo = response.Data.User.ContributionsCollection.TotalRepositoryContributions
 
-	return userStats, nil
+	return userStats
 }
 
 // executeQuery は指定されたGraphQLクエリをbytes:\xe5\xaebytes:\x9f行し、bytes:\xe7\xb5bytes:\x90果をバイト配列でbytes:\xe8\xbfbytes:\x94します。

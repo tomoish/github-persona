@@ -62,7 +62,6 @@ func FetchDataInTimeRange(token string, username string) (int, int, int, int, in
 		return 0, 0, 0, 0, 0, err
 	}
 	req.Header.Set("Authorization", "Bearer "+token)
-
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

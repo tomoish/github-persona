@@ -5,8 +5,11 @@ import (
 	"image/color"
 
 	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/font"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
+	// "github.com/fogleman/gg"
+	// "log"
 )
 
 func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int) error {
@@ -38,9 +41,13 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	if err != nil {
 		panic(err)
 	}
-	line.Color = color.RGBA{R: 0, G: 255, B: 0, A: 255}
+	line.Color = color.RGBA{R: 135, G: 206, B: 235, A: 255}
 	p.Add(line)
-
+	plot.DefaultFont = font.Font{
+		Typeface: "Roboto-Medium.ttf",
+		Variant:  "Roboto-Medium.ttf",
+		Size:     12.0,
+	}
 	p.Title.Text = "Contribution History"
 	p.X.Label.Text = "Days"
 	p.Y.Label.Text = "Commits"
@@ -49,6 +56,13 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	p.X.Max = 5
 	p.Y.Min = -0
 	p.Y.Max = float64(maxCommits) + 5
+
+	// ラベルの外に余白を持つ
+	p.Title.Padding = 10   // タイトル周りの余白
+	p.X.Label.Padding = 10 // X軸ラベル周りの余白
+	p.Y.Label.Padding = 10 // Y軸ラベル周りの余白
+
+	// DefaultTextHandler is the default text handler used for text processing.
 
 	white := color.White
 	p.Title.TextStyle.Color = white
@@ -66,6 +80,21 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	if err := p.Save(8*vg.Inch, 4*vg.Inch, "./images/commits_history.png"); err != nil {
 		panic(err)
 	}
+
+	// ggを使用してテキストをオーバーレイ
+	// dc := gg.NewContext(width, height)
+	// err = dc.LoadFontFace("Roboto-Medium.ttf", 123)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// // 背景を透明に設定
+	// dc.SetRGBA(0, 0, 0, 0) // 背景を透明に
+	// dc.SetRGB(0, 0, 0) // テキストの色を設定（黒色）
+	// dc.DrawString("kkdkdkdkkdd", 50, 10) // テキストを描画する位置を指定
+	// err = dc.SavePNG("./images/commits_history_with_text.png")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	return err
 }

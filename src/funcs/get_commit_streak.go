@@ -6,9 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-
-	"github.com/joho/godotenv"
 )
 
 const query_frame = `
@@ -68,10 +65,10 @@ func calculateStreak(weeks []struct {
 }
 
 func GetCommitHistory(username string) (int, []int, int, error) {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatalf("Error loading .env file")
+	// }
 	query := fmt.Sprintf(query_frame, username)
 
 	request := GraphQLQuery{Query: query}
@@ -86,7 +83,9 @@ func GetCommitHistory(username string) (int, []int, int, error) {
 		log.Fatalf("GitHub GraphQL API request failed: %v", err)
 	}
 
-	req.Header.Set("Authorization", "bearer "+os.Getenv("GITHUB_TOKEN"))
+	token, _ := GetTokens(0)
+
+	req.Header.Set("Authorization", "bearer "+token)
 
 	client := &http.Client{}
 	resp, _ := client.Do(req)

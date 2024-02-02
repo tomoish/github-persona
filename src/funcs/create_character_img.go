@@ -35,7 +35,7 @@ func CreateCharacterImg() {
 	}
 
 	// 画像をファイルに保存
-	err = SaveImage("images/merged.png", mergedImage)
+	err = SaveImage("./images/generate_character.png", mergedImage)
 	if err != nil {
 		fmt.Println(err)
 		return
