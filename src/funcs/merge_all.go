@@ -65,10 +65,10 @@ func Merge_all(nameImg, statsImg, characterImg, languageImg, dateImg string) {
 
 	// 画像のリサイズ
 
-	resizeImage(statsImg, uint(46*backgroundWidth)/100, 0)
-	resizeImage(characterImg, uint(40*backgroundWidth)/100, uint(40*backgroundWidth)/100)
-	resizeImage(languageImg, uint((46*backgroundWidth)/100), 0)
-	resizeImage(dateImg, uint((80*backgroundWidth)/100), 0)
+	ResizeImage(statsImg, uint(46*backgroundWidth)/100, 0)
+	ResizeImage(characterImg, uint(40*backgroundWidth)/100, uint(40*backgroundWidth)/100)
+	ResizeImage(languageImg, uint((46*backgroundWidth)/100), 0)
+	ResizeImage(dateImg, uint((80*backgroundWidth)/100), 0)
 	// 画像の幅と高さを取得
 	// width0, height0, _ := getImageSize(statsImg)
 	_, height1, _ := getImageSize(characterImg)
@@ -111,7 +111,7 @@ func Merge_all(nameImg, statsImg, characterImg, languageImg, dateImg string) {
 
 	// 合成した画像を保存
 	saveImage(backgroundImage, "result.png")
-	resizeImage("result.png", 700, 0)
+	ResizeImage("result.png", 700, 0)
 }
 
 // 画像を保存する関数
@@ -132,7 +132,7 @@ func saveImage(img image.Image, filename string) {
 	fmt.Println("Image saved as", filename)
 }
 
-func resizeImage(imageName string, width uint, height uint) {
+func ResizeImage(imageName string, width uint, height uint) {
 	// 元の画像の読み込み
 	file := imageName
 	fileData, err := os.Open(file)

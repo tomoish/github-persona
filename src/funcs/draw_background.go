@@ -8,7 +8,7 @@ import (
 	"github.com/fogleman/gg"
 )
 
-func DrawBackground(level, kind string) {
+func DrawBackground(username, level, kind string) {
 	const (
 		// Width  = 1200
 		// Height = 1800
@@ -34,7 +34,7 @@ func DrawBackground(level, kind string) {
 	dc.SetColor(color.White)
 
 	// テキストの座標を個別に指定して描画
-	text1 := "Hi, there! I'm Kota"
+	text1 := "Hi, there! I'm " + username
 	x1, y1 := (25*Width)/100, (15*Height)/100 // テキスト1の座標
 	dc.DrawStringAnchored(text1, float64(x1), float64(y1), 0.5, 0.5)
 
