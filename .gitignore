@@ -1,3 +1,7 @@
+# Google Cloud
+app.yaml
+.gcloudignore
+
 # mac
 .DS_Store
 
