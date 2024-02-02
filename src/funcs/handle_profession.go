@@ -1,7 +1,10 @@
 package funcs
 
+
 // 職業を判定する関数
 func JudgeProfession(rank string, topLanguages []string, percentages []float64) string {
+
+
 	// 職業のルートと言語を定義
 	magicRoute := map[string]string{
 		"TypeScript": "攻撃魔法", "R": "ネクロマンサー", "Flutter": "防御魔法",
@@ -127,3 +130,4 @@ func getFinalProfession(profession string, rank string) string {
 // 	fmt.Println(judgeProfession("A+", []string{"Assembly"}, []float64{100}))         // 賞金稼ぎのラスボス
 // 	fmt.Println(judgeProfession("S", []string{"Python"}, []float64{100}))            // 神
 // }
+
