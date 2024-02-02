@@ -5,7 +5,6 @@ import (
 	"image/color"
 
 	"gonum.org/v1/plot"
-	"gonum.org/v1/plot/font"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
 	// "github.com/fogleman/gg"
@@ -43,11 +42,11 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	}
 	line.Color = color.RGBA{R: 135, G: 206, B: 235, A: 255}
 	p.Add(line)
-	plot.DefaultFont = font.Font{
-		Typeface: "Roboto-Medium.ttf",
-		Variant:  "Roboto-Medium.ttf",
-		Size:     12.0,
-	}
+	// plot.DefaultFont = font.Font{
+	// 	Typeface: "Roboto-Medium.ttf",
+	// 	Variant:  "Roboto-Medium.ttf",
+	// 	Size:     12.0,
+	// }
 	p.Title.Text = "Contribution History"
 	p.X.Label.Text = "Days"
 	p.Y.Label.Text = "Commits"

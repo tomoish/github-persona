@@ -71,30 +71,30 @@ import (
 
 // }
 
-// func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
+func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 
-// 	// queryValues := r.URL.Query()
-// 	// username := queryValues.Get("username")
+	queryValues := r.URL.Query()
+	username := queryValues.Get("username")
 
-// 	// if username == "" {
-// 	// 	http.Error(w, "username is required", http.StatusBadRequest)
-// 	// 	return
-// 	// }
+	if username == "" {
+		http.Error(w, "username is required", http.StatusBadRequest)
+		return
+	}
 
-// 	username := "kou7306"
+	// username := "kou7306"
 
-// 	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	http.ServeFile(w, r, "./images/commits_history.png")
-// }
+	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+	if err != nil {
+		fmt.Println(err)
+	}
+	http.ServeFile(w, r, "./images/commits_history.png")
+}
 
 // func getuserHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -171,7 +171,7 @@ func main() {
 	// http.HandleFunc("/streak", getCommitStreakHandler)
 	// http.HandleFunc("/language", getLanguageHandler)
 	// http.HandleFunc("/character", getCharacterHandler)
-	// http.HandleFunc("/history", getHistoryHandler)
+	http.HandleFunc("/history", getHistoryHandler)
 	// http.HandleFunc("/user", getuserHandler)
 	// http.HandleFunc("/merge", mergeAllContents)
 	// http.HandleFunc("/background", getBackgroundHandler)
