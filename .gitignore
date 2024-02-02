@@ -1,6 +1,10 @@
 # Google Cloud
 app.yaml
 .gcloudignore
+infra/*.yaml
+
+#images
+/src/*.png
 
 # mac
 .DS_Store
