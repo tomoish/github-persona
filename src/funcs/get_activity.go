@@ -29,7 +29,8 @@ type response struct {
 	}
 }
 
-func FetchDataInTimeRange(token string, username string) (int, int, int, int, int, error) {
+func FetchData(username string) (int, int, int, int, int, error) {
+	token, _ := GetTokens(0)
 	const query_frame = `
 	{
 		user(login: "%s") {

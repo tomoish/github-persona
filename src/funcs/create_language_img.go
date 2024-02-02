@@ -7,13 +7,31 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-func CreateLanguageImg(username string) {
+func CreateLanguageImg(username string) []LanguageStat {
 	// 言語ごとの色をここで決める
 	colordict := map[string]string{
-		"HTML":   "#E34F26",
-		"CSS":    "#ffffff",
-		"Python": "#3498DB",
-		"others": "#000000",
+		"HTML":        "#ff0000",
+		"CSS":         "#ffa500",
+		"Python":      "#000080",
+		"JavaScript":  "#ffff00",
+		"TypeScript":  "#3cb371",
+		"R":           "#9932cc",
+		"Go":          "#87cefa",
+		"Scala":       "##006400",
+		"Flutter":     "#4169e1",
+		"Rust":        "#696969",
+		"assembly":    "#ffd700",
+		"C":           "#f0e68c",
+		"C++":         "#ff69b4",
+		"Objective-C": "#a52a2a",
+		"Matlab":      "#ff6347",
+		"C#":          "#800080",
+		"Swift":       "#800000",
+		"Kotlin":      "#bdb76b",
+		"Ruby":        "#ee82ee",
+		"PHP":         "#808000",
+		"Java":        "#daa520",
+		"others":      "#000000",
 	}
 
 	// キャッシュのキーを設定
@@ -52,7 +70,7 @@ func CreateLanguageImg(username string) {
 	fmt.Printf("repos: %v\n", repos)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return nil
 	}
 
 	// 言語ごとの全体のファイルサイズを初期化
@@ -106,9 +124,10 @@ func CreateLanguageImg(username string) {
 	err = SaveImage("./images/language.png", ImgBytes)
 	if err != nil {
 		fmt.Println(err)
+
 	}
 
-	// return languages
+	return languages
 
 }
 

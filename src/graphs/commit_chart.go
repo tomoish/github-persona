@@ -5,7 +5,6 @@ import (
 	"image/color"
 
 	"gonum.org/v1/plot"
-	"gonum.org/v1/plot/font"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
 	// "github.com/fogleman/gg"
@@ -28,7 +27,7 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 
 	p := plot.New()
 
-	bgColor := color.RGBA{R: 51, G: 61, B: 79, A: 255}
+	bgColor := color.RGBA{R: 51, G: 51, B: 51, A: 255}
 	p.BackgroundColor = bgColor
 
 	points := make(plotter.XYs, len(x))
@@ -43,11 +42,11 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	}
 	line.Color = color.RGBA{R: 135, G: 206, B: 235, A: 255}
 	p.Add(line)
-	plot.DefaultFont = font.Font{
-		Typeface: "Roboto-Medium.ttf",
-		Variant:  "Roboto-Medium.ttf",
-		Size:     12.0,
-	}
+	// plot.DefaultFont = font.Font{
+	// 	Typeface: "Roboto-Medium.ttf",
+	// 	Variant:  "Roboto-Medium.ttf",
+	// 	Size:     12.0,
+	// }
 	p.Title.Text = "Contribution History"
 	p.X.Label.Text = "Days"
 	p.Y.Label.Text = "Commits"
@@ -58,9 +57,9 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	p.Y.Max = float64(maxCommits) + 5
 
 	// ラベルの外に余白を持つ
-	p.Title.Padding = 10   // タイトル周りの余白
-	p.X.Label.Padding = 10 // X軸ラベル周りの余白
-	p.Y.Label.Padding = 10 // Y軸ラベル周りの余白
+	p.Title.Padding = 10  // タイトル周りの余白
+	p.X.Label.Padding = 2 // X軸ラベル周りの余白
+	p.Y.Label.Padding = 2 // Y軸ラベル周りの余白
 
 	// DefaultTextHandler is the default text handler used for text processing.
 
@@ -77,7 +76,7 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 
 	p.X.Padding, p.Y.Padding = 0, 0
 
-	if err := p.Save(8*vg.Inch, 4*vg.Inch, "./images/commits_history.png"); err != nil {
+	if err := p.Save(5*vg.Inch, 2*vg.Inch, "./images/commits_history.png"); err != nil {
 		panic(err)
 	}
 

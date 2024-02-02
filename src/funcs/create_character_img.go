@@ -5,10 +5,10 @@ import (
 	"math"
 )
 
-func CreateCharacterImg(characterPath, gaugePath string, contribution, level int) {
+func CreateCharacterImg(characterPath, gaugePath string, total, level int) {
 	// ゲージ画像生成のためのチャネル
 	gaugeImageChan := make(chan []byte)
-	percentage := (float64(contribution) - float64(math.Pow(float64(level), 2))) / float64(math.Pow(float64(level+1), 2))
+	percentage := (float64(total) - float64(math.Pow(float64(level), 2))) / float64(math.Pow(float64(level+1), 2))
 
 	// ゲージ画像を非同期で生成
 	go func() {
