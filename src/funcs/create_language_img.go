@@ -7,7 +7,7 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-func CreateLanguageImg(username string) {
+func CreateLanguageImg(username string) []LanguageStat {
 	// 言語ごとの色をここで決める
 	colordict := map[string]string{
 		"HTML":   "#E34F26",
@@ -52,7 +52,7 @@ func CreateLanguageImg(username string) {
 	fmt.Printf("repos: %v\n", repos)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return nil
 	}
 
 	// 言語ごとの全体のファイルサイズを初期化
@@ -106,9 +106,10 @@ func CreateLanguageImg(username string) {
 	err = SaveImage("./images/language.png", ImgBytes)
 	if err != nil {
 		fmt.Println(err)
+
 	}
 
-	// return languages
+	return languages
 
 }
 

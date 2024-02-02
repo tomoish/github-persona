@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/tomoish/readme/funcs"
-	"github.com/tomoish/readme/graphs"
+	"strconv"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -117,37 +115,52 @@ import (
 func createhandler(w http.ResponseWriter, r *http.Request) {
 	queryValues := r.URL.Query()
 	username := queryValues.Get("username")
-	// stats取得と画像生成
-	stats := funcs.CreateUserStats(username)
+	if r.Method == http.MethodGet {
+		// GETリクエストの処理
 
-	//レベル、職業判定
+		// stats取得と画像生成
+		stats := funcs.CreateUserStats(username)
+		total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
+		// 言語画像の生成
+		language := funcs.CreateLanguageImg(username)
+		//レベル、職業判定
+		profession, level := funcs.JudgeRank(language, stats)
 
-	// 背景画像の生成
-	funcs.DrawBackground(username, "Lv.30", "神")
+		// 背景画像の生成
+		funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
-	// キャラクター画像の生成
-	funcs.CreateCharacterImg("images/character.png", "images/gauge.png", stats.TotalCommits, 30)
+		// キャラクター画像の生成
+		funcs.CreateCharacterImg("characterimages/s.png", "images/gauge.png", total, level)
 
-	// 言語画像の生成
-	funcs.CreateLanguageImg(username)
+		// コミットカレンダー画像の生成
 
-	// コミットカレンダー画像の生成
+		_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// 全て合体
+		funcs.Merge_all("./images/background.png", "./images/stats.png", "./images/generate_character.png", "./images/language.png", "./images/commits_history.png")
+
+		http.ServeFile(w, r, "./result.png")
+		// } else if r.Method == http.MethodPost {
+		//     // POSTリクエストの処理
+		// 	totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchData(username)
+		// 	if err != nil {
+		// 		fmt.Println(err)
+		// 		return
+		// 	}
+
+	} else {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 
-	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// 全て合体
-	funcs.Merge_all("./images/background.png", "./images/stats.png", "./images/generate_character.png", "./images/language.png", "./images/commits_history.png")
-
-	http.ServeFile(w, r, "./result.png")
 }
 
 func main() {

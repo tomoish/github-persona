@@ -26,7 +26,7 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 	dc := gg.NewContext(width, height)
 
 	// 背景とタイトルの描画
-	dc.SetRGB(0.2, 0.24, 0.31) // 背景色（暗い青灰色）
+	dc.SetRGB(0.2, 0.2, 0.2) // 背景色（暗い青灰色）
 	drawRoundedRectangle(dc, 0, 0, float64(width), float64(height), cornerRadius)
 	dc.SetRGB(1, 1, 1)
 	err := dc.LoadFontFace("Roboto-Medium.ttf", 45) // フォントとサイズの設定が必要
