@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"strconv"
-
 	"github.com/tomoish/readme/funcs"
 	"github.com/tomoish/readme/graphs"
+	"log"
+	"net/http"
+	"strconv"
+	"os"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +81,7 @@ func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// username := "kou7306"
+
 
 	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
 	if err != nil {
@@ -125,7 +124,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		// GETリクエストの処理
 		// 一意の画像ファイル名の生成（例: ユーザー名とタイムスタンプを組み合わせる）
-		imageFileName := fmt.Sprintf("result_%s.png", username)
+		imageFileName := fmt.Sprintf("./resultimg/result_%s.png", username)
 
 		// 画像ファイルの存在チェック
 		if _, err := os.Stat(imageFileName); os.IsNotExist(err) {
@@ -139,12 +138,16 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			language := funcs.CreateLanguageImg(username)
 			//レベル、職業判定
 			profession, level := funcs.JudgeRank(language, stats)
+			fmt.Println("profession1: ", profession)
+			//対象のキャラの画像を取得
+			img := funcs.DispatchPictureBasedOnProfession(profession)
+			filePath := fmt.Sprintf("characterImages/%s", img)
 
 			// 背景画像の生成
 			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
-
+			fmt.Println("profession2: ", profession)
 			// キャラクター画像の生成
-			funcs.CreateCharacterImg("characterimages/s.png", "images/gauge.png", total, level)
+			funcs.CreateCharacterImg( filePath ,"images/gauge.png", total, level)
 
 			// コミットカレンダー画像の生成
 
@@ -163,14 +166,19 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			funcs.Merge_all("./images/background.png", "./images/stats.png", "./images/generate_character.png", "./images/language.png", "./images/commits_history.png", imageFileName)
 		}
 
-		// キャッシュ制御ヘッダーを設定
+		// // キャッシュ制御ヘッダーを設定
 		w.Header().Set("Cache-Control", "public, max-age=3600")
 
 		// 生成済みの画像ファイルをクライアントに返す
 		http.ServeFile(w, r, imageFileName)
 
 	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		//ファイル全削除
+		// files,err := iotil.ReadDir("./resultimg")
+		// if err != nil{
+		// 	fmt.Println()
+		// }
+		// http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 
 }
@@ -186,7 +194,7 @@ func main() {
 	// http.HandleFunc("/background", getBackgroundHandler)
 	http.HandleFunc("/create", createHandler)
 	fmt.Println("Hello, World!")
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}

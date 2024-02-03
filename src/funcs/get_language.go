@@ -78,7 +78,7 @@ func GetRepositoryLanguage(repoName, repoOwner, token string) (map[string]int, i
 		return nil, 0, err
 	}
 
-	fmt.Printf("response: %v\n", response.Data.Repository.Languages.Edges)
+
 
 	// 言語別のファイルサイズをマップに集計
 	languageSizes := make(map[string]int)
@@ -90,7 +90,6 @@ func GetRepositoryLanguage(repoName, repoOwner, token string) (map[string]int, i
 
 	totalSize := response.Data.Repository.Languages.TotalSize
 
-	fmt.Printf("languageSizes: %v\n", languageSizes)
 
 	return languageSizes, totalSize, nil
 }

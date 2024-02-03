@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image/color"
 	"log"
+    "strings"
 
 	"github.com/fogleman/gg"
 )
@@ -42,10 +43,17 @@ func DrawBackground(username, level, kind string) {
 	x2, y2 := (13*Width)/100, (25*Height)/100 // テキスト2の座標(テキストの中央に持つ)
 	dc.DrawStringAnchored(text2, float64(x2), float64(y2), 0.5, 0.5)
 
-	if err := dc.LoadFontFace("ipaexg.ttf", 30); err != nil {
-		fmt.Println("フォントのロードに失敗しました:", err)
-	}
 	text3 := kind
+    if strings.Contains(kind, "ネクロマンサー") {
+        if err := dc.LoadFontFace("ipaexg.ttf", 26); err != nil {
+            fmt.Println("フォントのロードに失敗しました:", err)
+        }
+    }else{
+
+        if err := dc.LoadFontFace("ipaexg.ttf", 30); err != nil {
+            fmt.Println("フォントのロードに失敗しました:", err)
+        }
+    }
 	x3, y3 := (33*Width)/100, (25*Height)/100 // テキスト3の座標
 	dc.DrawStringAnchored(text3, float64(x3), float64(y3), 0.5, 0.5)
 
