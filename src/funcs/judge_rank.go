@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-func JudgeRank(languages []LanguageStat, stats UserStats) (string, int) {
+func JudgeRank(languages []LanguageStat, stats UserStats,star int) (string, int) {
 	// データを取得
 	// 言語ごとの色をここで決める
 	colordict := map[string]string{
@@ -34,9 +34,10 @@ func JudgeRank(languages []LanguageStat, stats UserStats) (string, int) {
 		"Java":        "#daa520",
 		"others":      "#000000",
 	}
-	total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
+	total := star + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 
-	level := int(math.Sqrt(float64(total)))
+	// レベルを計算コントリビューション5000でレベル100
+	level := int(math.Sqrt(float64(total))*2.24)
 	if level > 100 {
 		level = 100
 	}
@@ -46,23 +47,23 @@ func JudgeRank(languages []LanguageStat, stats UserStats) (string, int) {
 	switch {
 	case total < 25:
 		rank = "C-"
-	case total < 100:
+	case total < 75:
 		rank = "C"
-	case total < 400:
+	case total < 175:
 		rank = "C+"
-	case total < 625:
+	case total < 320:
 		rank = "B-"
-	case total < 1225:
+	case total < 525:
 		rank = "B"
-	case total < 2500:
+	case total < 700:
 		rank = "B+"
-	case total < 4900:
+	case total < 900:
 		rank = "A-"
-	case total < 8100:
+	case total < 1200:
 		rank = "A"
-	case total < 10000:
+	case total < 1550:
 		rank = "A+"
-	case 10000 <= total:
+	case 2000 <= total:
 		rank = "S"
 	default:
 		rank = "C-"
