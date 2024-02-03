@@ -169,6 +169,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			//対象のキャラの画像を取得
 			img := funcs.DispatchPictureBasedOnProfession(profession)
 
+
 			filePath := fmt.Sprintf("characterImages/%s", img)
 
 			// 背景画像の生成
@@ -176,8 +177,6 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 
 			// キャラクター画像の生成
 			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level,username)
-
-
 
 			_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
 			if err != nil {
