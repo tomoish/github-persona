@@ -152,13 +152,13 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 
 			//対象のキャラの画像を取得
 			img := funcs.DispatchPictureBasedOnProfession(profession)
-			filePath := fmt.Sprintf("characterimages/%s", img)
+			
 
 			// 背景画像の生成
 			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
 			// キャラクター画像の生成
-			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level)
+			funcs.CreateCharacterImg(img, "images/gauge.png", total, level)
 
 			// コミットカレンダー画像の生成
 
