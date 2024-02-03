@@ -2,9 +2,11 @@
 app.yaml
 .gcloudignore
 infra/*.yaml
+*.zip
 
 #images
 /src/*.png
+/src/images/*.png
 
 # mac
 .DS_Store
