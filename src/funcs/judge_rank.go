@@ -37,6 +37,9 @@ func JudgeRank(languages []LanguageStat, stats UserStats) (string, int) {
 	total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 
 	level := int(math.Sqrt(float64(total)))
+	if level > 100 {
+		level = 100
+	}
 
 	rank := ""
 
