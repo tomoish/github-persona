@@ -141,6 +141,8 @@ func getFinalProfession(profession string, rank string, route string) string {
 	default:
 		finalProfession = profession // ランクが指定外の場合は基本職業をそのまま使用
 	}
+
+	fmt.Println("final: ", finalProfession)
 	return finalProfession
 }
 

@@ -111,7 +111,7 @@ func Merge_all(nameImg, statsImg, characterImg, languageImg, dateImg, filepath s
 
 	// 合成した画像を保存
 	saveImage(backgroundImage, filepath)
-	ResizeImage("result.png", 700, 0)
+	ResizeImage(filepath, 700, 0)
 }
 
 // 画像を保存する関数
