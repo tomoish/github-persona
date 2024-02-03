@@ -163,7 +163,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			// 言語画像の生成
 			language := funcs.CreateLanguageImg(username)
 			//レベル、職業判定
-			profession, level := funcs.JudgeRank(language, stats)
+			profession, level := funcs.JudgeRank(language, stats,star)
 
 
 			//対象のキャラの画像を取得
@@ -221,7 +221,7 @@ func main() {
 	// http.HandleFunc("/background", getBackgroundHandler)
 	http.HandleFunc("/create", createHandler)
 	fmt.Println("Hello, World!")
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
