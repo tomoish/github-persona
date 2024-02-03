@@ -189,9 +189,13 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				fmt.Println(err)
 			}
-
+			backImg := fmt.Sprintf("./images/background_%s.png", username)
+			statsImg := fmt.Sprintf("./images/stats_%s.png", username)
+			characterImg := fmt.Sprintf("./images/generate_character_%s.png", username)
+			languageImg := fmt.Sprintf("./images/language_%s.png", username)
+			dateImg := fmt.Sprintf("./images/commits_history_%s.png", username)
 			// 全て合体して画像を保存
-			funcs.Merge_all("./images/background.png", "./images/stats.png", "./images/generate_character.png", "./images/language.png", "./images/commits_history.png", imageFileName)
+			funcs.Merge_all(backImg,statsImg,characterImg,languageImg,dateImg, imageFileName)
 		}
 
 		// キャッシュ制御ヘッダーを設定
@@ -217,7 +221,7 @@ func main() {
 	// http.HandleFunc("/background", getBackgroundHandler)
 	http.HandleFunc("/create", createHandler)
 	fmt.Println("Hello, World!")
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
