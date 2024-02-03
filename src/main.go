@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-
+	"time"
 	"log"
 	"net/http"
 	"os"
@@ -91,7 +91,7 @@ func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700,username)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -136,31 +136,46 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 		// GETリクエストの処理
 		// 一意の画像ファイル名の生成（例: ユーザー名とタイムスタンプを組み合わせる）
 		imageFileName := fmt.Sprintf("result_%s.png", username)
+        // 画像ファイルの存在チェックと最終更新時間の確認
+        fileInfo, err := os.Stat(imageFileName)
+        regenerate := false // 再生成するかどうかのフラグ
 
-		// 画像ファイルの存在チェック
-		if _, err := os.Stat(imageFileName); os.IsNotExist(err) {
+        if err != nil && os.IsNotExist(err) {
+            // 画像が存在しない場合、再生成フラグを立てる
+            regenerate = true
+        } else if err == nil {
+            // 画像が存在する場合、最終更新時間からの経過時間を確認
+            elapsedTime := time.Since(fileInfo.ModTime())
+            if elapsedTime.Hours() >= 1 {
+                // 最終更新から1時間以上経過していれば、再生成フラグを立てる
+                regenerate = true
+            }
+        }
+
+        if regenerate {
 			// 画像が存在しない場合は、新たに生成
 
 			// 画像生成の処理...
+			_,star ,_ := funcs.GetRepositories(username)
 			// stats取得と画像生成
-			stats := funcs.CreateUserStats(username)
+			stats := funcs.CreateUserStats(username,star)
 			total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 			// 言語画像の生成
 			language := funcs.CreateLanguageImg(username)
 			//レベル、職業判定
 			profession, level := funcs.JudgeRank(language, stats)
 
+
 			//対象のキャラの画像を取得
 			img := funcs.DispatchPictureBasedOnProfession(profession)
-			
-			// コミットカレンダー画像の生成
+
 			filePath := fmt.Sprintf("characterImages/%s", img)
 
 			// 背景画像の生成
 			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
 			// キャラクター画像の生成
-			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level)
+			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level,username)
 
 
 
@@ -170,7 +185,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+			err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700,username)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -202,7 +217,7 @@ func main() {
 	// http.HandleFunc("/background", getBackgroundHandler)
 	http.HandleFunc("/create", createHandler)
 	fmt.Println("Hello, World!")
-	err := http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}

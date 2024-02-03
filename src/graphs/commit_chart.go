@@ -11,7 +11,7 @@ import (
 	// "log"
 )
 
-func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int) error {
+func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int,username string) error {
 	y := make([]float64, len(commitsHistory))
 	for i := range y {
 		y[i] = float64(commitsHistory[i])
@@ -75,8 +75,8 @@ func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int
 	p.Y.LineStyle.Color = white
 
 	p.X.Padding, p.Y.Padding = 0, 0
-
-	if err := p.Save(5*vg.Inch, 2*vg.Inch, "./images/commits_history.png"); err != nil {
+	imageFileName := fmt.Sprintf("./images/commits_history_%s.png", username)
+	if err := p.Save(5*vg.Inch, 2*vg.Inch, imageFileName); err != nil {
 		panic(err)
 	}
 

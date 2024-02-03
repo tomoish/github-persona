@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func CreateCharacterImg(characterPath, gaugePath string, total, level int) {
+func CreateCharacterImg(characterPath, gaugePath string, total, level int,username string) {
 	// ゲージ画像生成のためのチャネル
 	gaugeImageChan := make(chan []byte)
 	percentage := (float64(total) - float64(math.Pow(float64(level), 2))) / (float64(math.Pow(float64(level+1), 2) - math.Pow(float64(level), 2)))
@@ -32,7 +32,8 @@ func CreateCharacterImg(characterPath, gaugePath string, total, level int) {
 	}
 
 	// 画像をファイルに保存
-	err = SaveImage("./images/generate_character.png", mergedImage)
+	imageFileName := fmt.Sprintf("./images/generate_character_%s.png", username)
+	err = SaveImage(imageFileName , mergedImage)
 	if err != nil {
 		fmt.Println(err)
 		return
