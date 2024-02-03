@@ -1,18 +1,22 @@
 package funcs
 
+import (
+	"fmt"
+)
+
 // 職業を判定する関数
 func JudgeProfession(rank string, topLanguages []string, percentages []float64) string {
 	// 職業のルートと言語を定義
 	magicRoute := map[string]string{
-		"TypeScript": "攻撃魔法", "R": "ネクロマンサー", "Flutter": "防御魔法",
+		"TypeScript": "攻撃魔術師", "R": "ネクロマンサー", "Dart": "防御魔術師",
 		"Go": "召喚士", "Scala": "精霊魔法", "Rust": "回復術師",
 	}
 	outlawRoute := map[string]string{
-		"Assembly": "賞金稼ぎ", "C": "無法者", "C++": "無法者",
+		"Assembly": "賞金稼ぎ", "C": "犯罪者", "C++": "犯罪者",
 		"ObjectiveC": "盗賊", "Matlab": "盗賊",
 	}
 	warriorRoute := map[string]string{
-		"C#": "ファイター", "Swift": "弓使い", "Kotlin": "弓使い",
+		"C#": "武闘家", "Swift": "弓使い", "Kotlin": "弓使い",
 		"Ruby": "槍使い", "PHP": "槍使い", "HTML": "剣士", "CSS": "剣士",
 		"JavaScript": "剣士", "Java": "騎士", "Python": "士官",
 	}
@@ -62,7 +66,7 @@ func JudgeProfession(rank string, topLanguages []string, percentages []float64) 
 				}
 			}
 
-			if firstProfession != secondProfession {
+			if firstProfession != secondProfession && percentages[0] >= 15 && (percentages[1] >= 15 && rank == "A-" || rank == "A" || rank == "A+") {
 				if firstProfession == "アウトロー" && secondProfession == "戦士" {
 					profession = "バーカーサ"
 				} else if firstProfession == "戦士" && secondProfession == "アウトロー" {
@@ -81,6 +85,10 @@ func JudgeProfession(rank string, topLanguages []string, percentages []float64) 
 		}
 	}
 
+	fmt.Println("pro: ", profession)
+	fmt.Println("ro: ", route)
+	fmt.Println("ranks ", rank)
+
 	return getFinalProfession(profession, rank, route) // 最終的な職業をランクとルートに基づいて修正
 }
 
@@ -89,8 +97,20 @@ func JudgeProfession(rank string, topLanguages []string, percentages []float64) 
 func getFinalProfession(profession string, rank string, route string) string {
 	finalProfession := ""
 	switch rank {
+	case "C-":
+		finalProfession = "少年"
+	case "C":
+		finalProfession = "少年"
+	case "C+":
+		finalProfession = "冒険者見習い"
 	case "B-":
-		finalProfession = route + "の見習い"
+		if route == "魔法" {
+			finalProfession = "魔術師の見習い"
+		} else if route == "アウトロー" {
+			finalProfession = "不良"
+		} else {
+			finalProfession = "駆け出し冒険者"
+		}
 	case "B":
 		finalProfession = "初級 " + profession
 	case "B+":
@@ -100,7 +120,22 @@ func getFinalProfession(profession string, rank string, route string) string {
 	case "A":
 		finalProfession = "特級 " + profession
 	case "A+":
-		finalProfession = route + "のラスボス"
+		switch profession {
+		case "賞金稼ぎ", "犯罪者", "盗賊":
+			finalProfession = "裏社会のボス"
+		case "攻撃魔術師", "防御魔術師", "召喚士", "精霊魔法", "回復術師":
+			finalProfession = "魔法帝"
+		case "武闘家", "弓使い", "槍使い", "剣士":
+			finalProfession = "勇者"
+		case "騎士", "士官":
+			finalProfession = "騎士団長"
+		case "魔法戦士", "魔法騎士":
+			finalProfession = "賢者"
+		case "バーカーサ", "闇騎士":
+			finalProfession = "サイコパス"
+		default:
+			finalProfession = "魔王"
+		}
 	case "S":
 		finalProfession = "神"
 	default:
@@ -113,8 +148,8 @@ func getFinalProfession(profession string, rank string, route string) string {
 // 	fmt.Println(judgeProfession("C+", []string{"Go"}, []float64{100}))               // 召喚士
 // 	fmt.Println(judgeProfession("A", []string{"Python", "Java"}, []float64{20, 20})) // 特級 士官
 // 	fmt.Println(judgeProfession("C", []string{}, []float64{}))                       // 少年
-// 	fmt.Println(judgeProfession("B-", []string{"TypeScript"}, []float64{100}))       // 攻撃魔法の見習い
-// 	fmt.Println(judgeProfession("B", []string{"C"}, []float64{100}))                 // 初級 無法者
+// 	fmt.Println(judgeProfession("B-", []string{"TypeScript"}, []float64{100}))       // 攻撃魔術師の見習い
+// 	fmt.Println(judgeProfession("B", []string{"C"}, []float64{100}))                 // 初級 犯罪者
 // 	fmt.Println(judgeProfession("B+", []string{"Java"}, []float64{100}))             // 中級 騎士
 // 	fmt.Println(judgeProfession("A-", []string{"Rust"}, []float64{100}))             // 上級 回復術師
 // 	fmt.Println(judgeProfession("A", []string{"Go"}, []float64{100}))                // 特級 召喚士
@@ -122,7 +157,7 @@ func getFinalProfession(profession string, rank string, route string) string {
 // 	fmt.Println(judgeProfession("S", []string{"Python"}, []float64{100}))            // 神
 // }
 
-// func DispatchPictureBasedOnProfession(profession string) string {
+// func dispatchPictureBasedOnProfession(profession string) string {
 //     rankToPrefix := map[string]string{
 //         "初級":   "b",
 //         "中級":   "b+",
@@ -130,10 +165,10 @@ func getFinalProfession(profession string, rank string, route string) string {
 //         "特級":   "a",
 //     }
 //     professionToCode := map[string]int{
-//         "攻撃魔法": 1, "ネクロマンサー": 2, "防御魔法": 3,
+//         "攻撃魔術師": 1, "ネクロマンサー": 2, "防御魔術師": 3,
 //         "召喚士": 4, "精霊魔法": 5, "回復術師": 6,
-//         "賞金稼ぎ": 7, "無法者": 8, "盗賊": 9,
-//         "ファイター": 10, "弓使い": 11, "槍使い": 12,
+//         "賞金稼ぎ": 7, "犯罪者": 8, "盗賊": 9,
+//         "武闘家": 10, "弓使い": 11, "槍使い": 12,
 //         "剣士": 13, "騎士": 14, "士官": 15,
 //         "魔法使い": 16, // 魔法ルート
 //         // アウトローと戦士ルートは混合職を考慮してデフォルトで扱う
