@@ -18,7 +18,7 @@ func CreateLanguageImg(username string) []LanguageStat {
 		"R":           "#9932cc",
 		"Go":          "#87cefa",
 		"Scala":       "##006400",
-		"Flutter":     "#4169e1",
+		"Dart":     "#4169e1",
 		"Rust":        "#696969",
 		"assembly":    "#ffd700",
 		"C":           "#f0e68c",

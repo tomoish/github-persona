@@ -54,7 +54,7 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 	// 削除対象の言語を探し、スライスから削除
 	newLanguages := make([]LanguageStat, 0)
 	for _, lang := range languages {
-		if lang.Percent < 5.0 {
+		if lang.Percent < 5.0 || lang.Name == "Jupyter Notebook7"{
 			otherPercent += lang.Percent
 
 		} else {
@@ -90,19 +90,29 @@ func GenerateLanguageUsageGraph(languages []LanguageStat, width, height int) ([]
 	}
 
 	i := 0.0
+	columnWidth := 300.0 // 列の幅をここで調整する
 	for _, lang := range newLanguages {
+		column := math.Mod(i, 2.0) // 現在の列（0または1）
+
+		// X座標のオフセットを列に応じて調整
+		xOffset := column * columnWidth
+
 		// 色のサンプルを描画
 		dc.SetHexColor(lang.Color)
-		dc.DrawCircle(legendX+5.0+math.Mod(float64(int(i)), 2.0)*300.0, legendY+30, 5)
+		dc.DrawCircle(legendX+5.0+xOffset, legendY+30, 5)
 		dc.Fill()
 
 		// 言語名と割合を描画
 		dc.SetRGB(1, 1, 1)
-		dc.DrawString(fmt.Sprintf("%s %.2f%%", lang.Name, lang.Percent), legendX+20.0+math.Mod(float64(int(i)), 2.0)*300.0, legendY+45)
-		i += 1.0
-		legendY = legendY + math.Mod(float64(int(i)+1), 2.0)*40.0
+		dc.DrawString(fmt.Sprintf("%s %.2f%%", lang.Name, lang.Percent), legendX+20.0+xOffset, legendY+45)
 
+		i += 1.0
+		if int(i)%2 == 0 {
+			legendY += 40.0 // 次の行に移動
+		}
 	}
+
+
 
 	// 画像をバイトデータにエンコード
 	var buf bytes.Buffer

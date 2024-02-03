@@ -4,11 +4,36 @@ import (
 	// 他の import ステートメント
 	"math"
 	"sort"
+	"fmt"
 )
 
 func JudgeRank(languages []LanguageStat, stats UserStats) (string, int) {
 	// データを取得
-
+	// 言語ごとの色をここで決める
+	colordict := map[string]string{
+		"HTML":        "#ff0000",
+		"CSS":         "#ffa500",
+		"Python":      "#000080",
+		"JavaScript":  "#ffff00",
+		"TypeScript":  "#3cb371",
+		"R":           "#9932cc",
+		"Go":          "#87cefa",
+		"Scala":       "##006400",
+		"Dart":     "#4169e1",
+		"Rust":        "#696969",
+		"assembly":    "#ffd700",
+		"C":           "#f0e68c",
+		"C++":         "#ff69b4",
+		"Objective-C": "#a52a2a",
+		"Matlab":      "#ff6347",
+		"C#":          "#800080",
+		"Swift":       "#800000",
+		"Kotlin":      "#bdb76b",
+		"Ruby":        "#ee82ee",
+		"PHP":         "#808000",
+		"Java":        "#daa520",
+		"others":      "#000000",
+	}
 	total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 
 	level := int(math.Sqrt(float64(total)))
@@ -83,11 +108,13 @@ func JudgeRank(languages []LanguageStat, stats UserStats) (string, int) {
 			for _, language := range languages[2:] {
 				if language.Name != "HTML" && language.Name != "CSS" && language.Name != "JavaScript" && language.Name != "TypeScript" {
 					if language.Percent >= 15.0 {
-						topLanguage = append(topLanguage, language.Name)
-						percentages = append(percentages, language.Percent)
-						topLanguage = append(topLanguage, temp[0].Name)
-						percentages = append(percentages, temp[0].Percent)
-					} else {
+						if _, exists := colordict[language.Name]; exists {
+							topLanguage = append(topLanguage, language.Name)
+							percentages = append(percentages, language.Percent)
+							topLanguage = append(topLanguage, temp[0].Name)
+							percentages = append(percentages, temp[0].Percent)
+						}
+					}else {
 						topLanguage = append(topLanguage, temp[0].Name)
 						topLanguage = append(topLanguage, temp[1].Name)
 						percentages = append(percentages, temp[0].Percent)
@@ -98,5 +125,9 @@ func JudgeRank(languages []LanguageStat, stats UserStats) (string, int) {
 		}
 	}
 
+	fmt.Println("Top Language: ", topLanguage)
+	fmt.Println("Percentages: ", percentages)
+	fmt.Println("Rank: ", rank)
+	//ここまでいけてる　未定義のものがよくない
 	return JudgeProfession(rank, topLanguage, percentages), level
 }
