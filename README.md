@@ -1,40 +1,21 @@
-# read-me
+# GitHub Persona
 
-# Get started
-### Git clone
+![GitHub Persona Image](./github-persona.jpg)
+
+
+## GitHub Persona Image
+
+View your GitHub Persona Image on this page:
+
+https://read-me-psi.vercel.app/
+
+To display it in your markdown, simply copy and paste the following code. Remember to replace `<your username>` with your actual GitHub username.
 ```
-$ git clone https://github.com/tomoish/read-me.git
+![GitHub Persona](https://read-413014.an.r.appspot.com/create?username=<your username>)
 ```
 
-### run http server
-1. run main.go
-    ```
-    # ./src
-    $ go run main.go
-    ```
-    or
-    ```
-    $ docker-compose exec app go run main.go
-    ```
+#### Example
+![GitHub Persona](https://read-413014.an.r.appspot.com/create?username=tomoish)
 
-3. Test it out at http://localhost:8080/ (username)
-
-### Using Docker
-1. docker compose up
-    ```
-    # ./
-    $ docker compose up -d
-    ```
-
-2. Test it out at http://localhost:8080/ (username)
-
-### Format code
-1. install golangci-lint and pre-commit
-    ```
-    $ berw install golangci-lint
-    $ brew install pre-commit
-    ```
-2. setting for pre-commit
-    ```
-    $ pre-commit install -t pre-commit
-    ```
+## Contributing
+For information on setting up a development environment, see [CONTRIBUTING.md](./CONTRIBUTING.md).
