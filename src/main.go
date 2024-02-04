@@ -8,8 +8,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/tomoish/readme/funcs"
-	"github.com/tomoish/readme/graphs"
+	"github.com/tomoish/github-persona/funcs"
+	"github.com/tomoish/github-persona/graphs"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -73,30 +73,28 @@ import (
 
 // }
 
-func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
+// func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 
-	queryValues := r.URL.Query()
-	username := queryValues.Get("username")
+// 	queryValues := r.URL.Query()
+// 	username := queryValues.Get("username")
 
-	if username == "" {
-		http.Error(w, "username is required", http.StatusBadRequest)
-		return
-	}
+// 	if username == "" {
+// 		http.Error(w, "username is required", http.StatusBadRequest)
+// 		return
+// 	}
 
-	// username := "kou7306"
+// 	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
 
-	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
-	if err != nil {
-		fmt.Println(err)
-	}
-	http.ServeFile(w, r, "./images/commits_history.png")
-}
+// 	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	http.ServeFile(w, r, "./images/commits_history.png")
+// }
 
 // func getuserHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -194,7 +192,7 @@ func main() {
 	// http.HandleFunc("/streak", getCommitStreakHandler)
 	// http.HandleFunc("/language", getLanguageHandler)
 	// http.HandleFunc("/character", getCharacterHandler)
-	http.HandleFunc("/history", getHistoryHandler)
+	// http.HandleFunc("/history", getHistoryHandler)
 	// http.HandleFunc("/user", getuserHandler)
 	// http.HandleFunc("/merge", mergeAllContents)
 	// http.HandleFunc("/background", getBackgroundHandler)
@@ -204,34 +202,4 @@ func main() {
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
-	// ImgBytes, _ := funcs.GenerateGitHubStatsImage(stats,700,500)
-	// fmt.Println("ImgBytes: ", ImgBytes)
-
-	// 画像をファイルに保存
-	// err = funcs.SaveImage("images/language.png", ImgBytes)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// データを取得
-	// totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchDataInTimeRange(token, username)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	// fmt.Println("totalCommitContributions: ", totalCommitContributions)
-	// fmt.Println("totalStarredRepositories: ", totalStarredRepositories)
-	// fmt.Println("totalIssueContributions: ", totalIssueContributions)
-	// fmt.Println("totalPullRequestContributions: ", totalPullRequestContributions)
-	// fmt.Println("totalRepositoryContributions: ", totalRepositoryContributions)
-	fmt.Println(funcs.JudgeProfession("C+", []string{"Go"}, []float64{100}))
 }
-
-// } else if r.Method == http.MethodPost {
-//     // POSTリクエストの処理
-// 	totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchData(username)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return
-// 	}
