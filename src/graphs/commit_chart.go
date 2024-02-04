@@ -11,7 +11,7 @@ import (
 	// "log"
 )
 
-func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int,username string) error {
+func DrawCommitChart(commitsHistory []int, maxCommits int, width int, height int, username string) error {
 	y := make([]float64, len(commitsHistory))
 	for i := range y {
 		y[i] = float64(commitsHistory[i])

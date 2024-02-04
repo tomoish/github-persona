@@ -66,7 +66,7 @@ func CreateLanguageImg(username string) []LanguageStat {
 
 	// ユーザーのリポジトリ情報を取得
 
-	repos,_, err := GetRepositories(username)
+	repos, _, err := GetRepositories(username)
 
 	if err != nil {
 		fmt.Println(err)

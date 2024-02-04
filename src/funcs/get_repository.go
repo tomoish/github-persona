@@ -38,10 +38,10 @@ type GraphQLResponse struct {
 					Owner struct {
 						Login string `json:"login"`
 					} `json:"owner"`
-					IsFork bool `json:"isFork"`
+					IsFork     bool `json:"isFork"`
 					Stargazers struct {
 						TotalCount int `json:"totalCount"`
-					} `json:"stargazers"`					
+					} `json:"stargazers"`
 				} `json:"nodes"`
 			} `json:"repositories"`
 		} `json:"user"`
@@ -75,10 +75,10 @@ func GetRepositories(username string) ([]Repository, int, error) {
 			}
 		}
 	}
-	
+
 	`
 
-	token ,_:= GetTokens(0)
+	token, _ := GetTokens(0)
 	// GraphQLクエリにユーザー名を挿入
 	query = fmt.Sprintf(query, username)
 
@@ -88,13 +88,13 @@ func GetRepositories(username string) ([]Repository, int, error) {
 	reqBodyJSON, err := json.Marshal(reqBody)
 	if err != nil {
 		fmt.Println("JSON Marshal Error:", err)
-		return nil,0, err
+		return nil, 0, err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBodyJSON))
 	if err != nil {
 		fmt.Println("Request Error:", err)
-		return nil, 0,err
+		return nil, 0, err
 	}
 
 	req.Header.Set("Authorization", "Bearer "+token)
@@ -103,7 +103,7 @@ func GetRepositories(username string) ([]Repository, int, error) {
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("Request Error:", err)
-		return nil, 0,err
+		return nil, 0, err
 	}
 	defer resp.Body.Close()
 
@@ -112,7 +112,7 @@ func GetRepositories(username string) ([]Repository, int, error) {
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
 		fmt.Println("JSON Decode Error:", err)
-		return nil, 0,err
+		return nil, 0, err
 	}
 
 	repositories := []Repository{}
@@ -146,7 +146,7 @@ func GetRepositories(username string) ([]Repository, int, error) {
 	}
 
 	fmt.Printf("全リポジトリのスターの総数: %d\n", totalStars)
-	return repositories,totalStars, nil
+	return repositories, totalStars, nil
 }
 
 // スライス内にリポジトリが存在するかを確認

@@ -68,8 +68,8 @@ func DrawBackground(username, level, kind string) {
 	// ボーダーの上に背景画像を描画
 	dcBorder.DrawImage(dc.Image(), 0, 0)
 	// 画像をPNG形式で保存
-    imageFileName := fmt.Sprintf("./images/background_%s.png", username)
-	if err := dc.SavePNG(imageFileName ); err != nil {
+	imageFileName := fmt.Sprintf("./images/background_%s.png", username)
+	if err := dc.SavePNG(imageFileName); err != nil {
 		log.Fatal(err)
 	}
 

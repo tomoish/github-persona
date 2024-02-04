@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
-	"github.com/tomoish/readme/funcs"
-	"github.com/tomoish/readme/graphs"
+	"github.com/tomoish/github-persona/funcs"
+	"github.com/tomoish/github-persona/graphs"
 )
 
 // func handler(w http.ResponseWriter, r *http.Request) {
@@ -73,31 +73,27 @@ import (
 
 // }
 
-func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
+// func getHistoryHandler(w http.ResponseWriter, r *http.Request) {
 
-	queryValues := r.URL.Query()
-	username := queryValues.Get("username")
+// 	queryValues := r.URL.Query()
+// 	username := queryValues.Get("username")
 
-	if username == "" {
-		http.Error(w, "username is required", http.StatusBadRequest)
-		return
-	}
+// 	if username == "" {
+// 		http.Error(w, "username is required", http.StatusBadRequest)
+// 		return
+// 	}
 
-	// username := "kou7306"
-
-	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700,username)
-	if err != nil {
-		fmt.Println(err)
-	}
-	http.ServeFile(w, r, "./images/commits_history.png")
-}
-
+// 	_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+// 	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700, username)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	http.ServeFile(w, r, "./images/commits_history.png")
+// }
 // func getuserHandler(w http.ResponseWriter, r *http.Request) {
 
 // 	username := "kou7306"
@@ -136,36 +132,34 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 		// GETリクエストの処理
 		// 一意の画像ファイル名の生成（例: ユーザー名とタイムスタンプを組み合わせる）
 		imageFileName := fmt.Sprintf("result_%s.png", username)
-        // 画像ファイルの存在チェックと最終更新時間の確認
-        fileInfo, err := os.Stat(imageFileName)
-        regenerate := false // 再生成するかどうかのフラグ
+		// 画像ファイルの存在チェックと最終更新時間の確認
+		fileInfo, err := os.Stat(imageFileName)
+		regenerate := false // 再生成するかどうかのフラグ
 
-        if err != nil && os.IsNotExist(err) {
-            // 画像が存在しない場合、再生成フラグを立てる
-            regenerate = true
-        } else if err == nil {
-            // 画像が存在する場合、最終更新時間からの経過時間を確認
-            elapsedTime := time.Since(fileInfo.ModTime())
-            if elapsedTime.Hours() >= 1 {
-                // 最終更新から1時間以上経過していれば、再生成フラグを立てる
-                regenerate = true
-            }
-        }
+		if err != nil && os.IsNotExist(err) {
+			// 画像が存在しない場合、再生成フラグを立てる
+			regenerate = true
+		} else if err == nil {
+			// 画像が存在する場合、最終更新時間からの経過時間を確認
+			elapsedTime := time.Since(fileInfo.ModTime())
+			if elapsedTime.Hours() >= 1 {
+				// 最終更新から1時間以上経過していれば、再生成フラグを立てる
+				regenerate = true
+			}
+		}
 
-        if regenerate {
+		if regenerate {
 			// 画像が存在しない場合は、新たに生成
 
 			// 画像生成の処理...
-			_,star ,_ := funcs.GetRepositories(username)
+			_, star, _ := funcs.GetRepositories(username)
 			// stats取得と画像生成
-			stats := funcs.CreateUserStats(username,star)
+			stats := funcs.CreateUserStats(username, star)
 			total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 			// 言語画像の生成
 			language := funcs.CreateLanguageImg(username)
 			//レベル、職業判定
-			profession, level := funcs.JudgeRank(language, stats,star)
-
-
+			profession, level := funcs.JudgeRank(language, stats, star)
 			//対象のキャラの画像を取得
 			img := funcs.DispatchPictureBasedOnProfession(profession)
 
@@ -175,7 +169,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
 			// キャラクター画像の生成
-			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level,username)
+			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level, username)
 
 			_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
 			if err != nil {
@@ -183,7 +177,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700,username)
+			err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700, username)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -193,7 +187,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 			languageImg := fmt.Sprintf("./images/language_%s.png", username)
 			dateImg := fmt.Sprintf("./images/commits_history_%s.png", username)
 			// 全て合体して画像を保存
-			funcs.Merge_all(backImg,statsImg,characterImg,languageImg,dateImg, imageFileName)
+			funcs.Merge_all(backImg, statsImg, characterImg, languageImg, dateImg, imageFileName)
 		}
 
 		// キャッシュ制御ヘッダーを設定
@@ -213,7 +207,7 @@ func main() {
 	// http.HandleFunc("/streak", getCommitStreakHandler)
 	// http.HandleFunc("/language", getLanguageHandler)
 	// http.HandleFunc("/character", getCharacterHandler)
-	http.HandleFunc("/history", getHistoryHandler)
+	// http.HandleFunc("/history", getHistoryHandler)
 	// http.HandleFunc("/user", getuserHandler)
 	// http.HandleFunc("/merge", mergeAllContents)
 	// http.HandleFunc("/background", getBackgroundHandler)
@@ -223,34 +217,4 @@ func main() {
 	if err != nil {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
-	// ImgBytes, _ := funcs.GenerateGitHubStatsImage(stats,700,500)
-	// fmt.Println("ImgBytes: ", ImgBytes)
-
-	// 画像をファイルに保存
-	// err = funcs.SaveImage("images/language.png", ImgBytes)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// データを取得
-	// totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchDataInTimeRange(token, username)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	// fmt.Println("totalCommitContributions: ", totalCommitContributions)
-	// fmt.Println("totalStarredRepositories: ", totalStarredRepositories)
-	// fmt.Println("totalIssueContributions: ", totalIssueContributions)
-	// fmt.Println("totalPullRequestContributions: ", totalPullRequestContributions)
-	// fmt.Println("totalRepositoryContributions: ", totalRepositoryContributions)
-	fmt.Println(funcs.JudgeProfession("C+", []string{"Go"}, []float64{100}))
 }
-
-// } else if r.Method == http.MethodPost {
-//     // POSTリクエストの処理
-// 	totalCommitContributions, totalStarredRepositories, totalIssueContributions, totalPullRequestContributions, totalRepositoryContributions, err := funcs.FetchData(username)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return
-// 	}

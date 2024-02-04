@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-func JudgeRank(languages []LanguageStat, stats UserStats,star int) (string, int) {
+func JudgeRank(languages []LanguageStat, stats UserStats, star int) (string, int) {
 	// データを取得
 	// 言語ごとの色をここで決める
 	colordict := map[string]string{
@@ -36,7 +36,7 @@ func JudgeRank(languages []LanguageStat, stats UserStats,star int) (string, int)
 	total := star + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 
 	// レベルを計算コントリビューション5000でレベル100
-	level := int(total/15) 
+	level := int(total / 15)
 	if level > 100 {
 		level = 100
 	}
