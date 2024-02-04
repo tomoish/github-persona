@@ -3,6 +3,13 @@
 ```
 $ git clone https://github.com/tomoish/github-persona.git
 ```
+### Writing the .env File
+Create your GitHub token (starting with ghp_) and enter it into the .env file located at ./src/.env. Use the following format:
+```
+GITHUB_TOKEN=<your github token>
+GITHUB_TOKEN1=<your github token>
+GITHUB_TOKEN2=<your github token>
+```
 
 ### run http server
 1. run main.go
