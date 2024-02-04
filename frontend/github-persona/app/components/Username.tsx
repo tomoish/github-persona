@@ -12,17 +12,14 @@ interface ImageDisplayProps {
 }
 
 function ImageDisplay({ loading, imageUrl }: ImageDisplayProps) {
-  // ローディングインジケータを表示する
   if (loading) {
-    return <div>Loading...</div>; // ここにスピナーやローディングアイコンを置く
+    return <div>Loading...</div>;
   }
 
-  // 画像があり、ローディングでない場合は画像を表示する
   if (imageUrl) {
     return <img src={imageUrl} alt="GitHub User Image" className="w-8/12 h-auto"/>;
   }
 
-  // ローディングでも画像もない場合は何も表示しない
   return null;
 }
 
@@ -33,7 +30,6 @@ function Username() {
   const [resultText, setResultText] = useState<string>("![GitHub persona](https://read-413014.an.r.appspot.com/create?username=");
 
   const copyToClipboard = async () => {
-    // setResultText("![GitHub persona](https://read-413014.an.r.appspot.com/create?username=" + username + ")");
     await navigator.clipboard.writeText("![GitHub persona](https://read-413014.an.r.appspot.com/create?username=" + username + ")");
   };
 
@@ -46,12 +42,6 @@ function Username() {
     console.log(imageUrl);
     console.log(loading);
     setResultText("![GitHub persona](https://read-413014.an.r.appspot.com/create?username=" + username + ")");
-    // const response = await fetch(`http://localhost:8080/create?username=${username}`);
-    // const response = await fetch(`https://read-413014.an.r.appspot.com/create?username=${username}`);
-    // const data = await response.json();
-    // console.log(response);
-
-    // const rest = await getImage(username);
     try {
       const statusCode = await getImage(username);
       console.log(loading);
@@ -61,22 +51,12 @@ function Username() {
       console.log(loading);
 
     } finally {
-        setLoading(false); // ローディング終了
+        setLoading(false);
         console.log(loading);
     }
-    // console.log(rest);
     console.log(loading);
 
-    // router.refresh();
   };
-
-  // const copyToClipboard = (text: string) => {
-  //   navigator.clipboard.writeText(text).then(() => {
-  //     // alert("Copied to clipboard!");
-  //   }).catch(err => {
-  //     console.error('Failed to copy: ', err);
-  //   });
-  // }
 
   return (
     <form className="w-auto flex flex-col items-center justify-center mb-4 space-y-3 text-black" onSubmit={handleSubmit}>
@@ -111,7 +91,7 @@ function Username() {
     }
     </div>
       {/* {imageUrl && <img src={imageUrl} alt="GitHub User Image" className=""/>} */}
-      <div className="flex flex-col items-center justify-center z-50">
+      <div className="flex flex-col items-center justify-center z-40">
         <ImageDisplay loading={loading} imageUrl={imageUrl} />
       </div>
     </form>

@@ -8,6 +8,7 @@ import Username from "./components/Username";
 // import { loadAll } from "@/tsparticles/all"; // if you are going to use `loadAll`, install the "@tsparticles/all" package too.
 // import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
+import Footer from "./components/Footer";
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
 
 
@@ -149,19 +150,22 @@ export default function Home() {
 
   if (init) {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen py-2 bg-black">
-      <Particles
-        id="tsparticles"
-        particlesLoaded={particlesLoaded}
-        options={options}
-      />
-      <h1 className="text-4xl font-bold mt-16 text-white"> GitHub Persona</h1>
-      <div className="items-center justify-center mt-5">
-        <div className="w-full text-white">
-          <Username />
+    <>
+      <main className="flex flex-col items-center justify-center min-h-screen py-2 bg-black">
+        <Particles
+          id="tsparticles"
+          particlesLoaded={particlesLoaded}
+          options={options}
+        />
+        <h1 className="text-4xl font-bold mt-16 text-white"> GitHub Persona</h1>
+        <div className="items-center justify-center mt-5">
+          <div className="w-full text-white">
+            <Username />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
   }
   return <></>
