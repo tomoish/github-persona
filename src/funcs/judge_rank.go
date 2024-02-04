@@ -3,7 +3,6 @@ package funcs
 import (
 	// 他の import ステートメント
 	"fmt"
-	"math"
 	"sort"
 )
 
@@ -37,7 +36,7 @@ func JudgeRank(languages []LanguageStat, stats UserStats,star int) (string, int)
 	total := star + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 
 	// レベルを計算コントリビューション5000でレベル100
-	level := int(math.Sqrt(float64(total))*2.24)
+	level := int(total/15) 
 	if level > 100 {
 		level = 100
 	}
@@ -45,25 +44,25 @@ func JudgeRank(languages []LanguageStat, stats UserStats,star int) (string, int)
 	rank := ""
 
 	switch {
-	case total < 25:
+	case level < 3:
 		rank = "C-"
-	case total < 75:
+	case level < 10:
 		rank = "C"
-	case total < 175:
+	case level < 15:
 		rank = "C+"
-	case total < 320:
+	case level < 25:
 		rank = "B-"
-	case total < 525:
+	case level < 35:
 		rank = "B"
-	case total < 700:
+	case level < 46:
 		rank = "B+"
-	case total < 900:
+	case level < 60:
 		rank = "A-"
-	case total < 1200:
+	case level < 80:
 		rank = "A"
-	case total < 1550:
+	case level < 100:
 		rank = "A+"
-	case 2000 <= total:
+	case level == 100:
 		rank = "S"
 	default:
 		rank = "C-"
