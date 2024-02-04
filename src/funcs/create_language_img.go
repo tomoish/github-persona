@@ -66,7 +66,7 @@ func CreateLanguageImg(username string) []LanguageStat {
 
 	// ユーザーのリポジトリ情報を取得
 
-	repos, err := GetRepositories(username, token)
+	repos, _, err := GetRepositories(username)
 
 	if err != nil {
 		fmt.Println(err)
@@ -119,9 +119,9 @@ func CreateLanguageImg(username string) []LanguageStat {
 	}
 
 	ImgBytes, _ := GenerateLanguageUsageGraph(languages, 600, 400)
-
+	imageFileName := fmt.Sprintf("./images/language_%s.png", username)
 	// 画像をファイルに保存
-	err = SaveImage("./images/language.png", ImgBytes)
+	err = SaveImage(imageFileName, ImgBytes)
 	if err != nil {
 		fmt.Println(err)
 

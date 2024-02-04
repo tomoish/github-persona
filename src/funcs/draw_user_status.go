@@ -8,7 +8,7 @@ import (
 )
 
 // GenerateGitHubStatsImage 関数はユーザー統計情報を受け取り、グラフィカルな表現を画像として生成します。
-func GenerateGitHubStatsImage(stats UserStats, width, height int) ([]byte, error) {
+func GenerateGitHubStatsImage(stats UserStats, star, width, height int) ([]byte, error) {
 	// const padding = 20.0
 	// const lineHeight = 30.0
 
@@ -30,7 +30,7 @@ func GenerateGitHubStatsImage(stats UserStats, width, height int) ([]byte, error
 		Label string
 		Value int
 	}{
-		{"Total Stars Earned:", stats.TotalStars},
+		{"Total Stars Earned:", star},
 		{"Total Commits:", stats.TotalCommits},
 		{"Total PRs:", stats.TotalPRs},
 		{"Total Issues:", stats.TotalIssues},

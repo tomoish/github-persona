@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/tomoish/github-persona/funcs"
 	"github.com/tomoish/github-persona/graphs"
@@ -88,14 +88,12 @@ import (
 // 		http.Error(w, err.Error(), http.StatusInternalServerError)
 // 		return
 // 	}
-
-// 	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+// 	err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700, username)
 // 	if err != nil {
 // 		fmt.Println(err)
 // 	}
 // 	http.ServeFile(w, r, "./images/commits_history.png")
 // }
-
 // func getuserHandler(w http.ResponseWriter, r *http.Request) {
 
 // 	username := "kou7306"
@@ -134,31 +132,44 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 		// GETリクエストの処理
 		// 一意の画像ファイル名の生成（例: ユーザー名とタイムスタンプを組み合わせる）
 		imageFileName := fmt.Sprintf("result_%s.png", username)
+		// 画像ファイルの存在チェックと最終更新時間の確認
+		fileInfo, err := os.Stat(imageFileName)
+		regenerate := false // 再生成するかどうかのフラグ
 
-		// 画像ファイルの存在チェック
-		if _, err := os.Stat(imageFileName); os.IsNotExist(err) {
+		if err != nil && os.IsNotExist(err) {
+			// 画像が存在しない場合、再生成フラグを立てる
+			regenerate = true
+		} else if err == nil {
+			// 画像が存在する場合、最終更新時間からの経過時間を確認
+			elapsedTime := time.Since(fileInfo.ModTime())
+			if elapsedTime.Hours() >= 1 {
+				// 最終更新から1時間以上経過していれば、再生成フラグを立てる
+				regenerate = true
+			}
+		}
+
+		if regenerate {
 			// 画像が存在しない場合は、新たに生成
 
 			// 画像生成の処理...
+			_, star, _ := funcs.GetRepositories(username)
 			// stats取得と画像生成
-			stats := funcs.CreateUserStats(username)
+			stats := funcs.CreateUserStats(username, star)
 			total := stats.TotalStars + stats.ContributedTo + stats.TotalIssues + stats.TotalPRs + stats.TotalCommits
 			// 言語画像の生成
 			language := funcs.CreateLanguageImg(username)
 			//レベル、職業判定
-			profession, level := funcs.JudgeRank(language, stats)
-
+			profession, level := funcs.JudgeRank(language, stats, star)
 			//対象のキャラの画像を取得
 			img := funcs.DispatchPictureBasedOnProfession(profession)
 
-			// コミットカレンダー画像の生成
 			filePath := fmt.Sprintf("characterImages/%s", img)
 
 			// 背景画像の生成
 			funcs.DrawBackground(username, "Lv."+strconv.Itoa(level), profession)
 
 			// キャラクター画像の生成
-			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level)
+			funcs.CreateCharacterImg(filePath, "images/gauge.png", total, level, username)
 
 			_, dailyCommits, maxCommits, err := funcs.GetCommitHistory(username)
 			if err != nil {
@@ -166,13 +177,17 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700)
+			err = graphs.DrawCommitChart(dailyCommits, maxCommits, 1000, 700, username)
 			if err != nil {
 				fmt.Println(err)
 			}
-
+			backImg := fmt.Sprintf("./images/background_%s.png", username)
+			statsImg := fmt.Sprintf("./images/stats_%s.png", username)
+			characterImg := fmt.Sprintf("./images/generate_character_%s.png", username)
+			languageImg := fmt.Sprintf("./images/language_%s.png", username)
+			dateImg := fmt.Sprintf("./images/commits_history_%s.png", username)
 			// 全て合体して画像を保存
-			funcs.Merge_all("./images/background.png", "./images/stats.png", "./images/generate_character.png", "./images/language.png", "./images/commits_history.png", imageFileName)
+			funcs.Merge_all(backImg, statsImg, characterImg, languageImg, dateImg, imageFileName)
 		}
 
 		// キャッシュ制御ヘッダーを設定

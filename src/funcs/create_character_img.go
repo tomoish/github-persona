@@ -2,13 +2,12 @@ package funcs
 
 import (
 	"fmt"
-	"math"
 )
 
-func CreateCharacterImg(characterPath, gaugePath string, total, level int) {
+func CreateCharacterImg(characterPath, gaugePath string, total, level int, username string) {
 	// ゲージ画像生成のためのチャネル
 	gaugeImageChan := make(chan []byte)
-	percentage := (float64(total) - float64(math.Pow(float64(level), 2))) / (float64(math.Pow(float64(level+1), 2) - math.Pow(float64(level), 2)))
+	percentage := float64(15-(total%15)) / float64(15)
 	fmt.Println(percentage)
 	// ゲージ画像を非同期で生成
 	go func() {
@@ -32,7 +31,8 @@ func CreateCharacterImg(characterPath, gaugePath string, total, level int) {
 	}
 
 	// 画像をファイルに保存
-	err = SaveImage("./images/generate_character.png", mergedImage)
+	imageFileName := fmt.Sprintf("./images/generate_character_%s.png", username)
+	err = SaveImage(imageFileName, mergedImage)
 	if err != nil {
 		fmt.Println(err)
 		return

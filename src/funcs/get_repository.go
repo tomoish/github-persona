@@ -20,7 +20,7 @@ type Repository struct {
 }
 
 // レポジトリ取得の際のGraphQLのレスポンスを格納するための構造体です
-type GraphQLResponses struct {
+type GraphQLResponse struct {
 	Data struct {
 		User struct {
 			RepositoriesContributedTo struct {
@@ -38,14 +38,17 @@ type GraphQLResponses struct {
 					Owner struct {
 						Login string `json:"login"`
 					} `json:"owner"`
-					IsFork bool `json:"isFork"`
+					IsFork     bool `json:"isFork"`
+					Stargazers struct {
+						TotalCount int `json:"totalCount"`
+					} `json:"stargazers"`
 				} `json:"nodes"`
 			} `json:"repositories"`
 		} `json:"user"`
 	} `json:"data"`
 }
 
-func GetRepositories(username, token string) ([]Repository, error) {
+func GetRepositories(username string) ([]Repository, int, error) {
 	// GraphQLクエリを定義
 	query := `
 	{
@@ -65,12 +68,17 @@ func GetRepositories(username, token string) ([]Repository, error) {
 						login
 					}
 					isFork
+					stargazers {
+						totalCount
+					  }
 				}
 			}
 		}
 	}
+
 	`
 
+	token, _ := GetTokens(0)
 	// GraphQLクエリにユーザー名を挿入
 	query = fmt.Sprintf(query, username)
 
@@ -80,13 +88,13 @@ func GetRepositories(username, token string) ([]Repository, error) {
 	reqBodyJSON, err := json.Marshal(reqBody)
 	if err != nil {
 		fmt.Println("JSON Marshal Error:", err)
-		return nil, err
+		return nil, 0, err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBodyJSON))
 	if err != nil {
 		fmt.Println("Request Error:", err)
-		return nil, err
+		return nil, 0, err
 	}
 
 	req.Header.Set("Authorization", "Bearer "+token)
@@ -95,16 +103,16 @@ func GetRepositories(username, token string) ([]Repository, error) {
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("Request Error:", err)
-		return nil, err
+		return nil, 0, err
 	}
 	defer resp.Body.Close()
 
 	// レスポンスをパース
-	var response GraphQLResponses
+	var response GraphQLResponse
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
 		fmt.Println("JSON Decode Error:", err)
-		return nil, err
+		return nil, 0, err
 	}
 
 	repositories := []Repository{}
@@ -131,8 +139,14 @@ func GetRepositories(username, token string) ([]Repository, error) {
 			repositories = append(repositories, repository)
 		}
 	}
+	// スターの総数を計算
+	totalStars := 0
+	for _, node := range response.Data.User.Repositories.Nodes {
+		totalStars += node.Stargazers.TotalCount
+	}
 
-	return repositories, nil
+	fmt.Printf("全リポジトリのスターの総数: %d\n", totalStars)
+	return repositories, totalStars, nil
 }
 
 // スライス内にリポジトリが存在するかを確認
