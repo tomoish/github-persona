@@ -2,7 +2,7 @@ linters-settings:
   gofmt:
     simplify: true
   goimports:
-    local-prefixes: "github.com/tomoish/readme"
+    local-prefixes: "github.com/tomoish/github-persona"
 
 linters:
   enable:

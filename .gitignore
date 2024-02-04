@@ -6,7 +6,6 @@ infra/*.yaml
 
 #images
 /src/*.png
-/src/images/*.png
 
 # mac
 .DS_Store
